@@ -31,7 +31,7 @@ void CSR::triplet()
         {
             std::cout << i;
             std::cout << idx[j];
-            std::cout << val[j];
+            std::cout << val[j]<<"\n";
         }
     }
 }

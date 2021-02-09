@@ -5,17 +5,19 @@
 #ifndef AXB_TRIANGULARSOLVE_H
 #define AXB_TRIANGULARSOLVE_H
 #include "../Matrix.h"
+#include "CSR.h"
 
 class TriangularSolve
 {
     int rowNo;
 
-    ~TriangularSolve();
-
 public:
     TriangularSolve(int n);
 
     Matrix* solve(Matrix *L, Matrix *d);
+    Matrix* solve(CSR *L, Matrix *d);
+
+    ~TriangularSolve();
 };
 
 

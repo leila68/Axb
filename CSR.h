@@ -11,9 +11,6 @@
 class CSR {
     int row = 0;
     int col = 0;
-    double *val;
-    int *ptr;
-    int *idx;
     int nonzero;
     CSR(int r, int c, int n);
 
@@ -31,6 +28,10 @@ public:
     Matrix* csrMult();
 
     ~CSR();
+
+    double *val;
+    int *ptr;
+    int *idx;
 };
 
 

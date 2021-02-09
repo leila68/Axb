@@ -5,8 +5,6 @@
 #include <vector>
 #include "cmake-build-debug/TriangularSolve.h"
 #include "cmake-build-debug/CSR.h"
-
-
 //#include "stdafx.h"
 using namespace std;
 
@@ -42,18 +40,30 @@ int main()
     Matrix *y = ts1->solve(mtxL,rhs);
     y->print();
 
+    //triangularSolve,Test
+    Matrix *q = mtxL->mult(y);
+    bool r = q->isequal(rhs);
+    cout<<"the result of Triangular solve is: "<<r <<"\n";
+
+
     //CSR
     Matrix *spr = new Matrix(3,3, "Sparse Matrix");
     spr->Random(3);
     spr->print();
     CSR *c1 = new CSR(spr);
     c1->triplet();
-
     Matrix *reg =  c1->turnToRegular();
     reg->print();
-
     Matrix *vector = c1->csrMult();
     vector->print();
+
+    //csrSolve
+    CSR *c2 = new CSR(mtxL);
+    TriangularSolve *rs = new TriangularSolve(5);
+    Matrix *result = rs->solve(c2,rhs);
+    cout<<"Triangular Solve(CSR)"<<"\n";
+    result->print();
+
 
     delete mtx1;
     delete mtx2;
@@ -67,5 +77,8 @@ int main()
     delete c1;
     delete reg;
     delete vector;
+    delete c2;
+    delete rs;
+    delete result;
     return 0;
 }

@@ -113,3 +113,4 @@ Matrix* CSR::csrMult()
     }
     return result;
 }
+

@@ -205,5 +205,26 @@ void Matrix::LowerTriangular()
     }
 
 }
+ bool Matrix::isequal(Matrix *a)
+{
+    if (a->rowNo == rowNo & a->colNo == colNo)
+    {
+        for (int i = 0; i < rowNo; i++)
+        {
+            for (int j = 0; j < colNo; j++)
+            {
+                if (a->array[i][j] - array[i][j] > 0.1)//TODO
+                {
+                    return false;
+                }
+            }
+        }
+    }
+    else
+    {
+        return false;
+    }
 
+    return true;
+}
 

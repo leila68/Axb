@@ -3,7 +3,7 @@
 //
 
 #include "TriangularSolve.h"
-#include "../Matrix.h"
+#include "Matrix.h"
 #include <iostream>
 
 TriangularSolve::TriangularSolve(int n)

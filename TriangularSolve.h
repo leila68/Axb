@@ -4,7 +4,7 @@
 
 #ifndef AXB_TRIANGULARSOLVE_H
 #define AXB_TRIANGULARSOLVE_H
-#include "../Matrix.h"
+#include "Matrix.h"
 #include "CSR.h"
 
 class TriangularSolve

@@ -1,12 +1,13 @@
 //
 // Created by Leila on 2/2/2021.
 //
-#include <string>
 
-using namespace std;
+
+
 #ifndef AXB_MATRIX_H
 #define AXB_MATRIX_H
-
+#include <string>
+using namespace std;
 
 class Matrix
 {
@@ -22,13 +23,13 @@ public:
 
     ~Matrix();
 
-public:
+
     void setArray(int r, int c, double val);
-public:
+
     int getNonzero();
-public:
+
     int getRow();
-public:
+
     int getCol();
 
     void Random();
@@ -46,6 +47,7 @@ public:
     Matrix* mult(Matrix *m);
 
     void LowerTriangular();
+    bool Matrix::isequal(Matrix *a);
 
 };
 

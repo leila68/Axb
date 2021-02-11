@@ -3,9 +3,13 @@
 #include <ctime>
 #include <string>
 #include <vector>
-#include "cmake-build-debug/TriangularSolve.h"
-#include "cmake-build-debug/CSR.h"
+#include "TriangularSolve.h"
+#include "CSR.h"
+#include "math.h"
+#include  "sympiler/smp-format/io.h"
 //#include "stdafx.h"
+
+
 using namespace std;
 
 int main()
@@ -63,7 +67,23 @@ int main()
     Matrix *result = rs->solve(c2,rhs);
     cout<<"Triangular Solve(CSR)"<<"\n";
     result->print();
+    std::string in_path_ = "D:\\github\\Axb\\sympiler\\LFAT5.mtx";
+    std::ifstream fin(in_path_);
+    format::CSC *H;
+    read_mtx_csc_real(fin, H, true);
+    for(int i=0; i<H->m;i++)
+    {
+        for(int j=H->p[i]; j<H->p[i+1]; j++)
+        {
+            cout<<H->i[j]<<"\t";
+            cout<<i<<"\t";
+            cout<<H->x[j]<<"\n";
 
+
+        }
+    }
+  
+    delete H;
 
     delete mtx1;
     delete mtx2;

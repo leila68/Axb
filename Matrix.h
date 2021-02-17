@@ -23,7 +23,6 @@ public:
 
     ~Matrix();
 
-
     void setArray(int r, int c, double val);
 
     int getNonzero();
@@ -47,6 +46,7 @@ public:
     Matrix* mult(Matrix *m);
 
     void LowerTriangular();
+
     bool Matrix::isequal(Matrix *a);
 
 };

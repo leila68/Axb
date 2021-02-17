@@ -9,9 +9,15 @@
 
 
 class CSR {
+
     int row = 0;
     int col = 0;
-    int nonzero;
+    int nonzero = 0;
+public:
+    double *val;
+    int *ptr;
+    int *idx;
+
     CSR(int r, int c, int n);
 
     void printArray(double *arr);
@@ -23,16 +29,17 @@ public:
 
     CSR(Matrix *m);
 
+    CSR(int r, int c, int nz, double *v, int *p, int *ind, double *x);
+
     void triplet();
 
     Matrix* csrMult();
 
+    Matrix* csrMult(Matrix *v);
+
     ~CSR();
 
-    double *val;
-    int *ptr;
-    int *idx;
+    CSR(int r, int c, int nz, int *p, int *ind, double *x);
 };
-
 
 #endif //AXB_CSR_H

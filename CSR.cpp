@@ -17,7 +17,20 @@ CSR::CSR(int r, int c, int n)
 }
 CSR::CSR(Matrix *m)
 {
-initializeWithMatirx1(m);
+    initializeWithMatirx1(m);
+}
+CSR::CSR(int r, int c, int nz, int *p, int *ind, double *x)
+{
+    row = r;
+    col = c;
+    nonzero = nz;
+    ptr = new int[r+1]();
+    idx = new int[nz]();
+    val = new double[nz]();
+    ptr = p;
+    idx = ind;
+    val=x;
+
 }
 CSR::~CSR()
 {
@@ -29,8 +42,8 @@ void CSR::triplet()
     {
         for (int j = ptr[i]; j < ptr[i + 1]; j++)
         {
-            std::cout << i;
-            std::cout << idx[j];
+            std::cout << i<<"\t";
+            std::cout << idx[j]<<"\t";
             std::cout << val[j]<<"\n";
         }
     }
@@ -81,7 +94,7 @@ void CSR::initializeWithMatirx1(Matrix *m)//Private
 Matrix* CSR::turnToRegular()
 {
 
-    Matrix *y = new Matrix(row, col, "turn");
+    Matrix *y = new Matrix(row, col, "turn to regular:");
 
     for (int i = 0; i < row; i++)
     {
@@ -96,8 +109,8 @@ Matrix* CSR::turnToRegular()
 }
 Matrix* CSR::csrMult()
 {
-    Matrix *result = new Matrix(row, 1, "resultVector");
-    Matrix *v = new Matrix(row, 1, "vector");
+    Matrix *result = new Matrix(row, 1, "result of sparse matrix(csr) * Vector:");
+    Matrix *v = new Matrix(row, 1, "vector:");
     v->Random();
     v->print();
     double s = 0;
@@ -106,11 +119,25 @@ Matrix* CSR::csrMult()
         for (int j=ptr[i]; j<ptr[i+1]; j++ )
         {
             s = val[j] * v->getArray(idx[j],0) + s;
-            result->setArray(i, 0, s);
-
         }
+        result->setArray(i, 0, s);
         s = 0;
     }
     return result;
 }
+Matrix* CSR::csrMult(Matrix *v)
+{
+    Matrix *result = new Matrix(row, 1, "result for testing csrSolve:");
+    double s = 0;
+    for (int i=0; i<row; i++)
+    {
+        for (int j=ptr[i]; j<ptr[i+1]; j++ )
+        {
+            s = val[j] * v->getArray(idx[j],0) + s;
+        }
+        result->setArray(i, 0, s);
+        s = 0;
+    }
+    return result;
 
+}

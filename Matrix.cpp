@@ -4,49 +4,49 @@
 
 #include "Matrix.h"
 #include <iostream>
-    Matrix::Matrix(int row, int col, string str)
-     {
-       rowNo = row;
-       colNo = col;
-       name = str;
-       array = new double*[rowNo]();
-       for (int i = 0; i < rowNo; ++i)
-        {
+Matrix::Matrix(int row, int col, string str)
+{
+    rowNo = row;
+    colNo = col;
+    name = str;
+    array = new double*[rowNo]();
+    for (int i = 0; i < rowNo; ++i)
+    {
         array[i] = new double[colNo]();
-        }
-     }
-   Matrix::~Matrix()
-   {
-       for(int i = 0; i < rowNo; ++i)
-       {
-           delete [] array[i];
-       }
-       delete [] array;
-   }
+    }
+}
+Matrix::~Matrix()
+{
+    for(int i = 0; i < rowNo; ++i)
+    {
+        delete [] array[i];
+    }
+    delete [] array;
+}
 
-    double Matrix::getArray(int r, int c)
+double Matrix::getArray(int r, int c)
+{
+    return array[r][c];
+}
+void Matrix::setArray(int r, int c, double val)
+{
+    array[r][c] = val;
+}
+int Matrix::getNonzero()
+{
+    int zero = 0;
+    for (int i = 0; i < rowNo; i++)
     {
-        return array[r][c];
-    }
-    void Matrix::setArray(int r, int c, double val)
-    {
-        array[r][c] = val;
-    }
-    int Matrix::getNonzero()
-    {
-        int zero = 0;
-        for (int i = 0; i < rowNo; i++)
+        for (int j = 0; j < colNo; j++)
         {
-            for (int j = 0; j < colNo; j++)
+            if (array[i][j] != 0)
             {
-                if (array[i][j] != 0)
-                {
-                    zero++;
-                }
+                zero++;
             }
         }
-        return zero;
     }
+    return zero;
+}
 int Matrix::getRow()
 {
     return rowNo;
@@ -205,7 +205,7 @@ void Matrix::LowerTriangular()
     }
 
 }
- bool Matrix::isequal(Matrix *a)
+bool Matrix::isequal(Matrix *a)
 {
     if (a->rowNo == rowNo & a->colNo == colNo)
     {
@@ -227,4 +227,3 @@ void Matrix::LowerTriangular()
 
     return true;
 }
-

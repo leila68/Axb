@@ -17,7 +17,7 @@ TriangularSolve::~TriangularSolve()
 }
 Matrix* TriangularSolve::solve(Matrix *L, Matrix *d)
 {
-    Matrix *y = new Matrix(rowNo, 1, "y");
+    Matrix *y = new Matrix(rowNo, 1, "y(0) - y(rowNumber):");
     double s = 0;
     y->setArray(0, 0, d->getArray(0, 0)/L->getArray(0,0))  ;
 
@@ -37,7 +37,7 @@ Matrix* TriangularSolve::solve(Matrix *L, Matrix *d)
 }
 Matrix* TriangularSolve::solve(CSR *L, Matrix *d)
 {
-    Matrix *y = new Matrix(rowNo, 1, "y");
+    Matrix *y = new Matrix(rowNo, 1, "y(0) - y(rowNumber):");
     double s = 0;
 
 

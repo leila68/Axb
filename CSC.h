@@ -8,13 +8,13 @@
 
 class CSC
 {
+  friend class Matrix;
   int row = 0;
   int col = 0;
   int nonzero = 0;
-  int *ptr;
-  int *idx;
-  double *val;
-  CSC(int r, int c, int nnz);
+
+
+    CSC(int r, int c, int nnz);
 
     CSC(Matrix *m);
 
@@ -26,6 +26,14 @@ public:
     void Triplet();
 
     Matrix* turnToRegular();
+
+    void initializeWithMatirx1(Matrix *m);
+
+    Matrix* cscMult(Matrix *v);
+
+    double *val;
+    int *ptr;
+    int *idx;
 };
 
 

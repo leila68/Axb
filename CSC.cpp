@@ -22,10 +22,11 @@ CSC::CSC(int r, int c, int nnz, int *p, int *idx, double *val)
     ptr = p;
     this->idx = idx;
     this->val = val;
+
 }
 CSC::CSC(Matrix *m)
 {
-
+  initializeWithMatirx1(m);
 }
 void CSC::Triplet()
 {
@@ -48,9 +49,30 @@ Matrix* CSC::turnToRegular()
     {
         for (int j = ptr[i]; j < ptr[i+1]; j++)
         {
-            y->setArray( idx[j], i, val[j]);
+           // y->setArray( idx[j], i, val[j]);
+            y->array[idx[j]][i] = val[j];
 
         }
     }
     return y;
+}
+
+void CSC::initializeWithMatirx1(Matrix *m)
+{
+
+}
+
+Matrix* CSC::cscMult(Matrix *v)
+{
+    Matrix *result = new Matrix(row, 1, "CSC * vector :");
+
+         for (int i=0; i<col; i++ )
+           {
+               for (int j=ptr[i]; j<ptr[i+1]; j++)
+               {
+                    result->array [idx[j]][0] = (val[j]*v->array[idx[j]][0]) + result->array[idx[j]][0];
+
+               }
+           }
+    return result;
 }

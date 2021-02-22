@@ -67,6 +67,19 @@ void Matrix::Random()
         }
     }
 }
+void Matrix::One()
+{
+
+    for (int i = 0; i < rowNo; i++)
+    {
+        for (int j = 0; j < colNo; j++)
+        {
+            array[i][j] = 1;
+
+        }
+    }
+}
+
 void Matrix::Random(int z)
 {
     int count = 0;
@@ -85,6 +98,26 @@ void Matrix::Random(int z)
         }
     } while (count<z);
 }
+ /*void Matrix::RandomLow()
+{
+    Matrix *l = new Matrix(rowNo,colNo,"a lower triangular sparse matrix:");
+    int row;
+    int col;
+    for (int i = 0; i < row; ++i)
+    {
+        for (int j = 0; j < col; ++j)
+        {
+            if(i >= j)
+            {
+                if(array[i][j] == 0)
+                {
+                    array[row][col] = rand() % 10+1;
+                }
+            }
+        }
+    }
+
+}*/
 
 void Matrix::print()
 {
@@ -95,7 +128,7 @@ void Matrix::print()
     {
         for (int j = 0; j < colNo; j++)
         {
-            std::cout << array[i][j]<< " " ;
+            std::cout << array[i][j]<< " "<<" " ;
         }
         std::cout << "\n";
     }
@@ -167,7 +200,7 @@ Matrix* Matrix::averageCol()
 Matrix* Matrix::mult(Matrix *m)
 {
 
-    Matrix *n = new Matrix(rowNo, m->colNo, "mtx1 * mtx2");
+    Matrix *n = new Matrix(rowNo, m->colNo, "result of multiply of two matrix:");
     if (colNo == m->rowNo)
     {
 

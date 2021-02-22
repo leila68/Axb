@@ -9,7 +9,8 @@
 
 
 class CSR {
-
+    friend  class Matrix;
+    friend  class TriangularSolve;
     int row = 0;
     int col = 0;
     int nonzero = 0;
@@ -37,6 +38,7 @@ public:
 
     Matrix* csrMult(Matrix *v);
 
+    void turntoCSR();
     ~CSR();
 
     CSR(int r, int c, int nz, int *p, int *ind, double *x);

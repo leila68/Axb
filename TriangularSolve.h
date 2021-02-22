@@ -6,9 +6,12 @@
 #define AXB_TRIANGULARSOLVE_H
 #include "Matrix.h"
 #include "CSR.h"
+#include "CSC.h"
 
 class TriangularSolve
 {
+    friend class Matrix;
+    friend class CSR;
     int rowNo;
 
 public:
@@ -16,6 +19,7 @@ public:
 
     Matrix* solve(Matrix *L, Matrix *d);
     Matrix* solve(CSR *L, Matrix *d);
+    Matrix* solve(CSC *L, Matrix *d);
 
     ~TriangularSolve();
 };

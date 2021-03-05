@@ -18,8 +18,6 @@ class CSC
 
     CSC(Matrix *m);
 
-
-
 public:
     CSC(int r, int c, int nnz, int *p, int *idx, double *val);
 

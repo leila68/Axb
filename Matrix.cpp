@@ -98,6 +98,29 @@ void Matrix::Random(int z)
         }
     } while (count<z);
 }
+
+void Matrix::
+Random(int z, string s)
+{
+      for(int i=0; i<rowNo; i++)
+        {
+            array[i][i] = rand() % 10+1;
+            //array[i][i] = 1;
+            for (int j= 1; j <= z/2 ; j++)
+            {
+                if(i+1<rowNo)
+                {
+                    array[i+j][i]= rand() % 10+1;
+                   array[i][i+j] = rand() % 10+1;
+                  //  array[i+j][i]= 1;
+                  //  array[i][i+j] = 1;
+                }
+            }
+
+        }
+}
+
+
  /*void Matrix::RandomLow()
 {
     Matrix *l = new Matrix(rowNo,colNo,"a lower triangular sparse matrix:");

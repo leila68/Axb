@@ -9,6 +9,8 @@
 #include "math.h"
 #include  "sympiler/smp-format/io.h"
 #include "CSC.h"
+#include "diagonal.h"
+
 //#include "stdafx.h"
 using namespace std;
 
@@ -18,6 +20,7 @@ void triangularTest();
 void  csrTest();
 void  csrFileTest();
 void  cscFileTest();
+void diagonalTest();
 
 
 int main()
@@ -29,9 +32,9 @@ int main()
     // averageTest();
     // triangularTest();
     // csrTest();
-    // csrFileTest();
-     cscFileTest();
-
+  //   csrFileTest();
+    // cscFileTest();
+      diagonalTest();
     return 0;
 }
 
@@ -154,8 +157,8 @@ void  csrTest()
 void  csrFileTest()
 {
     //sparse matrix file(csc)
-    std::string in_path_ = "D:\\github\\Axb\\sympiler\\LFAT5.mtx";
-    // std::string in_path_ = "D:\\github\\Axb\\sympiler\\Trefethen_20b.mtx";
+  //  std::string in_path_ = "D:\\github\\Axb\\sympiler\\LFAT5.mtx";
+    std::string in_path_ ="D:\\github\\Axb\\sympiler\\bcsstk01.mtx" ;
     std::ifstream fin(in_path_);
     format::CSC *H;
     read_mtx_csc_real(fin, H, true);
@@ -202,8 +205,8 @@ void  csrFileTest()
 void  cscFileTest()
 {
     //sparse matrix file(csc)
-    std::string in_path_ = "D:\\github\\Axb\\sympiler\\LFAT5.mtx";
-    // std::string in_path_ = "D:\\github\\Axb\\sympiler\\Trefethen_20b.mtx";
+  //  std::string in_path_ = "D:\\github\\Axb\\sympiler\\LFAT5.mtx";
+     std::string in_path_ ="D:\\github\\Axb\\sympiler\\bcsstk01.mtx" ;
     std::ifstream fin(in_path_);
     format::CSC *H;
     read_mtx_csc_real(fin, H, true);
@@ -233,4 +236,22 @@ void  cscFileTest()
     delete ccr;
     delete ccs;
     delete result3;
+}
+
+void  diagonalTest()
+{
+      Matrix *dia = new Matrix(5,5," ");
+      dia->Random(3,"3diagonal");
+      dia->print();
+      diagonal *d1 = new diagonal(5,5,3);
+      Matrix *d3 = d1->turnTo(dia);
+      d3->print();
+      Matrix *d4 = d1->multiply(d3);
+      d4->print();
+
+    delete dia;
+    delete d1;
+    delete d3;
+    delete d4;
+
 }

@@ -11,9 +11,10 @@ using namespace std;
 
 class Matrix
 {
-    friend  class CSR;
+    friend class CSR;
     friend class  TriangularSolve;
-    friend  class  CSC;
+    friend class  CSC;
+    friend class diagonal;
     int rowNo;
     int colNo;
     std::string name;
@@ -39,6 +40,8 @@ public:
     void One();
 
     void Random(int z);
+
+    void Random(int z, string s);
 
    // void Matrix::RandomLow();
 

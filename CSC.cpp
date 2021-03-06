@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include "CSC.h"
+#include <chrono>
+
 CSC::CSC(int r, int c, int nnz)
 {
     row = r;
@@ -26,7 +28,7 @@ CSC::CSC(int r, int c, int nnz, int *p, int *idx, double *val)
 }
 CSC::CSC(Matrix *m)
 {
-  initializeWithMatirx1(m);
+  initializeWithMatirx(m);
 }
 void CSC::Triplet()
 {
@@ -57,16 +59,49 @@ Matrix* CSC::turnToRegular()
     return y;
 }
 
-void CSC::initializeWithMatirx1(Matrix *m)
+void CSC::initializeWithMatirx(Matrix *m)
 {
+    int c = 0;
+    int s;
+    row = m->rowNo;
+    col = m->colNo;
+    nonzero = m->getNonzero();
 
+    ptr = new int[col + 1]();
+    idx = new int[nonzero]();
+    val = new double[nonzero]();
+    int *nzcol = new int[col];
+    ptr[0] = 0;
+    // int *first = new int[row];
+
+    for (int i = 0; i < col; i++)
+    {
+        s = 0;
+        for (int j = 0; j < row; j++)
+        {
+            if (m->array[i][j] != 0)
+            {
+                val[c] = m->array[j][i];
+                idx[c] = j;
+                c++;
+                s++;
+            }
+        }
+        nzcol[i] = s;
+    }
+    for (int i = 1; i <= col; i++)
+    {
+        ptr[i] = ptr[i - 1] + nzcol[i - 1];
+    }
 }
 
 Matrix* CSC::cscMult(Matrix *v)
 {
     Matrix *result = new Matrix(row, 1, "CSC * vector :");
 
-         for (int i=0; i<col; i++ )
+    int start_s=clock() ;//execution time
+
+    for (int i=0; i<col; i++ )
            {
                for (int j=ptr[i]; j<ptr[i+1]; j++)
                {
@@ -74,5 +109,8 @@ Matrix* CSC::cscMult(Matrix *v)
 
                }
            }
+    int stop_s=clock();//execution time
+    cout<<"time:" <<(stop_s-start_s)/double(CLOCKS_PER_SEC)*1000 << "\n";
+
     return result;
 }

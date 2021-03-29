@@ -4,6 +4,7 @@
 
 #include "CSR.h"
 #include <iostream>
+#include <chrono>
 
 CSR::CSR(int r, int c, int n)
 {
@@ -118,6 +119,7 @@ Matrix* CSR::csrMult()
     v->Random();
     v->print();
     double s = 0;
+
     for (int i=0; i<row; i++)
     {
         for (int j=ptr[i]; j<ptr[i+1]; j++ )
@@ -129,6 +131,7 @@ Matrix* CSR::csrMult()
         result->array[i][0] = s;
         s = 0;
     }
+
     return result;
 }
 
@@ -136,6 +139,8 @@ Matrix* CSR::csrMult(Matrix *v)
 {
     Matrix *result = new Matrix(row, 1, "result for testing csrSolve:");
     double s = 0;
+
+
     for (int i=0; i<row; i++)
     {
         for (int j=ptr[i]; j<ptr[i+1]; j++ )
@@ -146,6 +151,8 @@ Matrix* CSR::csrMult(Matrix *v)
        result->array[i][0] = s;
         s = 0;
     }
+
+
     return result;
 }
 

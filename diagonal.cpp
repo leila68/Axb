@@ -3,7 +3,6 @@
 //
 
 #include "diagonal.h"
-#include "Timer.h"
 #include <iostream>
 #include <iomanip>
 #include <chrono>

@@ -4,6 +4,7 @@
 
 #include "Matrix.h"
 #include <iostream>
+#include <cmath>
 Matrix::Matrix(int row, int col, string str)
 {
     rowNo = row;
@@ -74,12 +75,14 @@ void Matrix::One()
     {
         for (int j = 0; j < colNo; j++)
         {
+
+
             array[i][j] = 1;
 
         }
     }
-}
 
+}
 void Matrix::Random(int z)
 {
     int count = 0;
@@ -98,28 +101,37 @@ void Matrix::Random(int z)
         }
     } while (count<z);
 }
-
-void Matrix::
-Random(int z, string s)
+void Matrix::Random(int z, string s)
 {
-      for(int i=0; i<rowNo; i++)
-        {
-            array[i][i] = rand() % 10+1;
-            //array[i][i] = 1;
-            for (int j= 1; j <= z/2 ; j++)
-            {
-                if(i+1<rowNo)
-                {
-                    array[i+j][i]= rand() % 10+1;
-                   array[i][i+j] = rand() % 10+1;
-                  //  array[i+j][i]= 1;
-                  //  array[i][i+j] = 1;
-                }
+
+    for (int i=1; i<=z/2; i++) {
+        for (int j = 0; j < colNo; j++) {
+            array[j][j]= rand() % 10+1;
+
+            if (j + i < rowNo) {
+                array[j][j + i] = rand() % 10+1;
+
+                array[j + i][j] = rand() % 10+1;
             }
 
         }
+    }
 }
+void Matrix::Random1(int z, string s)
+{
+    for (int i=1; i<=z/2; i++) {
+        for (int j = 0; j < colNo; j++) {
+            array[j][j]= 1;
 
+            if (j + i < rowNo) {
+                array[j][j + i] = 1;
+
+                array[j + i][j] = 1;
+            }
+
+        }
+    }
+}
 
  /*void Matrix::RandomLow()
 {
@@ -180,6 +192,22 @@ Matrix* Matrix::add(Matrix *m)
         return m;
     }
 }
+
+Matrix* Matrix::addTest()
+{
+    Matrix *s = new Matrix (rowNo, 1, "result:");
+    for (int i = 0; i < rowNo; i++)
+    {
+        for (int j = 0; j < colNo; j++)
+
+        {
+            s->array[i][0] += array[i][j] ;
+        }
+    }
+
+    return  s;
+}
+
 Matrix* Matrix::averageRow()
 {
     Matrix *rowsum = new Matrix(rowNo,1, "RowAve");
@@ -247,6 +275,7 @@ Matrix* Matrix::mult(Matrix *m)
     }
     return n;
 }
+
 void Matrix::LowerTriangular()
 {
     for (int i = 0; i < rowNo; i++)
@@ -261,6 +290,7 @@ void Matrix::LowerTriangular()
     }
 
 }
+
 bool Matrix::isequal(Matrix *a)
 {
     if (a->rowNo == rowNo & a->colNo == colNo)
@@ -269,7 +299,11 @@ bool Matrix::isequal(Matrix *a)
         {
             for (int j = 0; j < colNo; j++)
             {
-                if (a->array[i][j] - array[i][j] > 0.1)//TODO
+                if ( isinf(abs(a->array[i][j] - array[i][j])) )//TODO
+                {
+                    return false;
+                }
+                if (abs(a->array[i][j] - array[i][j]) > 1e-6 )//TODO
                 {
                     return false;
                 }

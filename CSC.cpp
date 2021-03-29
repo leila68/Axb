@@ -30,6 +30,10 @@ CSC::CSC(Matrix *m)
 {
   initializeWithMatirx(m);
 }
+CSC::~CSC()
+{
+
+}
 void CSC::Triplet()
 {
     cout<<"CSC:"<<"\n";
@@ -79,7 +83,7 @@ void CSC::initializeWithMatirx(Matrix *m)
         s = 0;
         for (int j = 0; j < row; j++)
         {
-            if (m->array[i][j] != 0)
+            if (m->array[j][i] != 0)
             {
                 val[c] = m->array[j][i];
                 idx[c] = j;
@@ -99,18 +103,14 @@ Matrix* CSC::cscMult(Matrix *v)
 {
     Matrix *result = new Matrix(row, 1, "CSC * vector :");
 
-    int start_s=clock() ;//execution time
-
     for (int i=0; i<col; i++ )
            {
                for (int j=ptr[i]; j<ptr[i+1]; j++)
                {
-                    result->array [idx[j]][0] = (val[j]*v->array[idx[j]][0]) + result->array[idx[j]][0];
+                    result->array [idx[j]][0] += val[j]*v->array[i][0] ;
 
                }
            }
-    int stop_s=clock();//execution time
-    cout<<"time:" <<(stop_s-start_s)/double(CLOCKS_PER_SEC)*1000 << "\n";
 
     return result;
 }

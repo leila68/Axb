@@ -16,10 +16,16 @@
 
     public:
 
-        Matrix* turnTo(Matrix *d);
-        Matrix* multiply(Matrix *d);
+        Matrix* diaStore(Matrix *m, int a);
+        Matrix* diaMult(Matrix *d, Matrix *v);
+        Matrix* diaStore2(Matrix *m, int a);
+        Matrix* diaMult2(Matrix *d, Matrix *v);
+        int * offsetCompute(int a);
 
         diagonal(int r, int c, int d);
+        diagonal(int d);
+        ~diagonal();
+
     };
 
 

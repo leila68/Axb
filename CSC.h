@@ -16,22 +16,23 @@ class CSC
 
     CSC(int r, int c, int nnz);
 
-    CSC(Matrix *m);
-
 public:
     CSC(int r, int c, int nnz, int *p, int *idx, double *val);
-
+    ~CSC();
     void Triplet();
 
     Matrix* turnToRegular();
 
-    void initializeWithMatirx1(Matrix *m);
+    void initializeWithMatirx(Matrix *m);
 
     Matrix* cscMult(Matrix *v);
+
 
     double *val;
     int *ptr;
     int *idx;
+
+    CSC(Matrix *m);
 };
 
 

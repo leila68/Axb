@@ -3,7 +3,11 @@
 //
 
 #include "diagonal.h"
+#include "Timer.h"
 #include <iostream>
+#include <iomanip>
+#include <chrono>
+
 
 diagonal::diagonal(int r, int c, int d)
 {
@@ -11,86 +15,172 @@ diagonal::diagonal(int r, int c, int d)
     col = c;
     dNum = d;
 }
-
-Matrix* diagonal::turnTo(Matrix *d)
+diagonal::diagonal(int d)
 {
 
-    offset = new int[dNum]();
-    Matrix *dd = new Matrix(dNum,d->colNo," turn a diagonal matrix to a dense matrix:");
-    //int j=1;
-    /*for (int i=0; i<d->rowNo; i++)
-    {
-            dd->array[1][i] = d->array[i][i];
-            if(i+1<d->rowNo)
-            {
-                dd->array[0][i] = d->array[i][i+1];
-                dd->array[2][i] = d->array[i+1][i];
+    dNum = d;
+}
+diagonal::~diagonal()
+{
 
-            }
-
-    }*/
-
-    for (int i=1; i<=dNum/2; i++)
-    {
-        for (int j = 0; j < d->colNo; j++) {
-            dd->array[(dNum/2)][j] = d->array[j][j];
-
-            if (j + 1 < d->rowNo) {
-                dd->array[(dNum/2) - i][j] = d->array[j][j + 1];
-
-                dd->array[(dNum/2) + i][j] = d->array[j + 1][j];
-            }
-
-        }
-        offset[dNum/2]=0;
-        offset[(dNum/2) - i]=-i;
-        offset[(dNum/2) + i]=i;
-        /* for (int j = 0; j < 3; ++j)
-         {
-            cout<<offset[j];
-
-         }*/
-    }
-    return dd;
 }
 
-Matrix* diagonal::multiply(Matrix *dd)
+int * diagonal::offsetCompute(int a)
 {
-    int  i,j;
+    offset = new int[dNum]();
 
-    //  int offset[] = {-1,0,1};
-    Matrix *v = new Matrix(row,1," vector:");
-    v->One();
-    v->print();
-    Matrix *result = new Matrix(row,1," vector:");
-
-
-    for(int l=0; l<dd->rowNo; l++)
+    if(a == -1)
     {
+        cout << "offset:";
+        for (int i=1; i<=dNum/2; i++) {
 
-        for(int k=0; k < dd->colNo - abs(offset[l]) ; k++)
-        {
-            if(offset[l]>0)
-            {
-                i = k + offset[l];
-                j = k;
-
-                result->array[i][0] += dd->array[l][k] * v->array[j][0];
-            }
-            if(offset[l]==0)
-            {
-                i = k ;
-                j = k ;
-                result->array[i][0] += dd->array[l][k] * v->array[j][0];
-            }
-            if(offset[l]<0)
-            {
-                i = k;
-                j = k-offset[l];
-
-                result->array[i][0] += dd->array[l][k] * v->array[j][0];
-            }
+            offset[dNum / 2] = 0;
+            offset[(dNum / 2) - i] = -i;
+            offset[(dNum / 2) + i] = i;
         }
     }
-    return  result;
+    if(a == 1)
+    {
+       // cout << "offset:";
+        for (int i=0; i<=dNum/2; i++) {
+
+             offset[i] = i;
+           // cout<<offset[i]<<","<<"\n";
+        }
+    }
+
+   /*  for (int j = 0; j < dNum; ++j)
+   {
+       cout<<offset[j];
+       cout<<"\n";
+   }*/
+   cout<<"\n";
+    return offset;
+}
+
+Matrix* diagonal::diaStore(Matrix *m, int a)
+{
+    if (a == -1) {
+         offset = new int[dNum]();
+        Matrix *dd = new Matrix(dNum, m->colNo, " turn a diagonal matrix to a dense matrix:");
+
+        for (int i = 1; i <= dNum / 2; i++) {
+            for (int j = 0; j < m->colNo; j++) {
+                dd->array[(dNum / 2)][j] = m->array[j][j];
+
+                if (j + i < m->rowNo) {
+                    dd->array[(dNum / 2) - i][j] = m->array[j][j + i];
+
+                    dd->array[(dNum / 2) + i][j] = m->array[j + i][j];
+                }
+
+            }
+              offset[dNum/2]=0;
+              offset[(dNum/2) - i]=-i;
+              offset[(dNum/2) + i]=i;
+        }
+        return dd;
+    }
+   else if (a == 1) {
+        Matrix *dd = new Matrix((dNum/2)+1, m->colNo, " turn a diagonal matrix to a dense matrix:");
+
+        for (int i = 0; i <= dNum / 2; i++) {
+            for (int j = 0; j < m->colNo; j++) {
+                if(i==0)
+                {
+                    dd->array[i][j] = m->array[j][j];
+                }
+
+                else if (j + i < m->rowNo) {
+                   // dd->array[(dNum / 2) - i][j] = m->array[j][j + i];
+
+                    dd->array[i][j] = m->array[j+i][j];
+                }
+
+            }
+        }
+        return dd;
+    }
+    return 0;
+}
+
+ Matrix* diagonal::diaMult(Matrix *d,Matrix *v)
+ {
+     int i, j;
+
+     Matrix *result = new Matrix(row, 1, " vector:");
+
+
+     for (int l = 0; l < d->rowNo; l++) {
+         for (int k = 0; k < d->colNo - abs(offset[l]); k++) {
+             if (offset[l] > 0) {
+                 i = k + offset[l];
+                 j = k;
+
+                 result->array[i][0] += d->array[l][k] * v->array[j][0];
+             }
+             if (offset[l] == 0) {
+                 i = k;
+                 j = k;
+                 result->array[i][0] += d->array[l][k] * v->array[j][0];
+             }
+             if (offset[l] < 0) {
+                 i = k;
+                 j = k - offset[l];
+
+                 result->array[i][0] += d->array[l][k] * v->array[j][0];
+             }
+         }
+     }
+
+     return result;
+ }
+
+Matrix* diagonal::diaStore2(Matrix *m, int a)
+{
+
+    Matrix *dm = new Matrix(m->rowNo, (dNum/2)+1, " turn a diagonal matrix to a dense matrix:");
+    int c=0;
+  for (int i=0; i< m->rowNo; i++)
+  {
+      for(int j=0; j<=i; j++)
+      {
+          if(m->array[i][j] !=0)
+          {
+              dm->array[i][c] = m->array[i][j];
+              c++;
+          }
+      }
+      c=0;
+  }
+    return dm;
+}
+
+Matrix* diagonal::diaMult2(Matrix *d, Matrix *v)
+{
+    Matrix *result = new Matrix(row, 1, " vector:");
+   // int k=1;
+    int d1 = dNum/2;
+
+     for(int i=0; i<row; i++)
+     {
+         if(i<=d1)
+         {
+             for(int j=0; j<=i ; j++)
+             {
+                 result->array[i][0] += (d->array[i][j]*v->array[j][0]);
+             }
+         }
+         if(i>d1)
+         {
+             for (int j = i; j >= j-d1; j--)
+             {
+                 result->array[i][0] += (d->array[i][d1]*v->array[j][0]);
+                 d1--;
+             }
+             d1=dNum/2;
+         }
+     }
+
+    return result;
 }

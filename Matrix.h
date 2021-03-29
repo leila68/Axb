@@ -42,12 +42,15 @@ public:
     void Random(int z);
 
     void Random(int z, string s);
+    void Random1(int z, string s);
 
    // void Matrix::RandomLow();
 
     void print();
 
     Matrix* add(Matrix *m);
+
+    Matrix* addTest();
 
     Matrix* averageRow();
 
@@ -58,6 +61,7 @@ public:
     void LowerTriangular();
 
     bool Matrix::isequal(Matrix *a);
+
 
 };
 

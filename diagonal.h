@@ -21,7 +21,6 @@
         Matrix* diaStore2(Matrix *m, int a);
         Matrix* diaMult2(Matrix *d, Matrix *v);
         int * offsetCompute(int a);
-
         diagonal(int r, int c, int d);
         diagonal(int d);
         ~diagonal();

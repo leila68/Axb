@@ -11,9 +11,9 @@ CSR::CSR(int r, int c, int n)
     row = r;
     col = c;
     nonzero = n;
-    ptr = new int[r+1]();
-    idx = new int[n]();
-    val = new double[n]();
+    ptr = new int[row+1]();
+    idx = new int[nonzero]();
+    val = new double[nonzero]();
 
 }
 CSR::CSR(Matrix *m)

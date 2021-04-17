@@ -31,6 +31,7 @@ public:
     CSR(Matrix *m);
 
     CSR(int r, int c, int nz, double *v, int *p, int *ind, double *x);
+
     ~CSR();
 
     void triplet();

@@ -12,8 +12,8 @@ CSC::CSC(int r, int c, int nnz)
     col = c;
     nonzero = nnz;
     ptr = new int[col+1]();
-    idx = new int[nnz]();
-    val = new double[nnz]();
+    idx = new int[nonzero]();
+    val = new double[nonzero]();
 
 }
 CSC::CSC(int r, int c, int nnz, int *p, int *idx, double *val)
@@ -103,7 +103,7 @@ Matrix* CSC::cscMult(Matrix *v)
 {
     Matrix *result = new Matrix(row, 1, "CSC * vector :");
 
-    for (int i=0; i<col; i++ )
+         for (int i=0; i<col; i++ )
            {
                for (int j=ptr[i]; j<ptr[i+1]; j++)
                {

@@ -90,9 +90,8 @@ Matrix* diagonal::diaStore(Matrix *m, int a)
                     dd->array[i][j] = m->array[j][j];
                 }
 
-                else if (j + i < m->rowNo) {
-                   // dd->array[(dNum / 2) - i][j] = m->array[j][j + i];
-
+                else if (j + i < m->rowNo)
+                {
                     dd->array[i][j] = m->array[j+i][j];
                 }
 

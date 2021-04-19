@@ -35,10 +35,10 @@ CSR::CSR(int r, int c, int nz, int *p, int *ind, double *x)
 }
 CSR::~CSR()
 {
-    delete ptr ;
-    delete idx ;
-    delete val;
-    delete nzRow;
+    delete []ptr ;
+    delete []idx ;
+    delete []val;
+    delete []nzRow;
 }
 void CSR::triplet()
 {

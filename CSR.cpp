@@ -35,7 +35,10 @@ CSR::CSR(int r, int c, int nz, int *p, int *ind, double *x)
 }
 CSR::~CSR()
 {
-
+    delete ptr ;
+    delete idx ;
+    delete val;
+    delete nzRow;
 }
 void CSR::triplet()
 {
@@ -67,10 +70,10 @@ void CSR::initializeWithMatirx1(Matrix *m)//Private
     col = m->colNo;
     nonzero = m->getNonzero();
 
-    ptr = new int[row + 1]();
-    idx = new int[nonzero]();
-    val = new double[nonzero]();
-    int *nzRow = new int[row];
+    ptr = new int[row + 1](); //TODO delete this in destructor /checked
+    idx = new int[nonzero](); // TODO: delete thisin destructor /checked
+    val = new double[nonzero](); //delete this in destructor //TODO /checked
+    nzRow = new int[row]; //TODO: delete this /checked
     ptr[0] = 0;
    // int *first = new int[row];
 

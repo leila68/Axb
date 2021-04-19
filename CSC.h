@@ -13,12 +13,11 @@ class CSC
   int col = 0;
   int nonzero = 0;
 
-
-
-    CSC(int r, int c, int nnz);
+  CSC(int r, int c, int nnz);
 
 public:
     CSC(int r, int c, int nnz, int *p, int *idx, double *val);
+
     ~CSC();
     void Triplet();
 
@@ -27,7 +26,6 @@ public:
     void initializeWithMatirx(Matrix *m);
 
     Matrix* cscMult(Matrix *v);
-
 
     double *val;
     int *ptr;

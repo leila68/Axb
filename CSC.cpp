@@ -32,10 +32,10 @@ CSC::CSC(Matrix *m)
 }
 CSC::~CSC()
 {
-    delete ptr;
-    delete idx;
-    delete val;
-    delete nzcol;
+    delete []ptr;
+    delete []idx;
+    delete []val;
+    delete []nzcol;
 }
 void CSC::Triplet()
 {

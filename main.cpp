@@ -8,7 +8,7 @@
 #include "TriangularSolve.h"
 #include "CSR.h"
 #include "math.h"
-#include  "sympiler/smp-format/io.h"
+#include  "sympiler-io/io.h"
 #include "CSC.h"
 #include "diagonal.h"
 #include <chrono>
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     srand((unsigned)time(NULL));
     //cout<<argv[0];
 
-   /* std::ifstream f (argv[1]);
+    std::ifstream f (argv[1]);
     std::string name;
 
    while(std::getline(f, name) )
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
       // cout<<name<<"\n";
        RunAll2(name);
     }
-  f.close();*/
+  f.close();
 
     //Diagonal should be odd number dim: number of rows  - dl=number of diagonal
 
@@ -62,14 +62,14 @@ int main(int argc, char *argv[])
    //  csrTest(10);
    // csrFileTest(f1);
    //cscFileTest(f1);
-   // RunAll1(name);
+    RunAll1(name);
   //diagonalTest(15,5);
    // diagonalSolveTest(50,11);
    // diagonal2Test(10,5);
  //  generalMultTest(100,17);
   //  generalSolveTest(100,19);
-    // generalMultTest1(1000,19);//this fuction repeat each multiply 5 times
-    generalSolveTest1(1000,27);//this fuction repeat each solve 5 times
+    // generalMultTest1(1000,19);//this function repeat each multiply 5 times
+    //generalSolveTest1(1000,27);//this function repeat each solve 5 times
     return 0;
 }
 

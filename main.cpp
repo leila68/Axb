@@ -107,6 +107,7 @@ void addMultTest(int dim)
 
     delete mtx1;
     delete mtx2;
+    delete mtx3;
     delete ml;
 }
 
@@ -121,9 +122,11 @@ void averageTest(int dim)
     //col average, matrix3
     Matrix *ave2 = mtx3->averageCol();
     ave2->print();
+
+    delete mtx3;
     delete ave1;
     delete ave2;
-    delete mtx3;
+
 }
 
 void triangularTest(int dim)
@@ -150,8 +153,11 @@ void triangularTest(int dim)
     q->print();
     bool r = q->isequal(rhs);
     cout<<"the result of Triangular solve is: "<<r <<"\n";
+
     delete mtxL;
     delete rhs;
+    delete ts1;
+    delete y;
     delete q;
 }
 
@@ -455,7 +461,7 @@ void  RunAll2(string f1)
         t1.push_back(durationSym1);
         // cout << "exacution time (CSR Solve):" << durationSym1 << "\n";
         //result2->print();
-
+       delete result2;
     }
     sort(t1.begin(), t1.end());
     cout << "Sorted(CSR)"<<",";
@@ -505,7 +511,7 @@ void  RunAll2(string f1)
         double durationSym2 = elapsed_seconds.count();
         t2.push_back(durationSym2);
         // result3->print();
-
+        delete result3;
     }
     sort(t2.begin(), t2.end());
     cout << "Sorted(CSC)"<<",";
@@ -554,9 +560,7 @@ void  diagonalTest(int dim, int dl)
       v1->Random();
       v1->print();
        Matrix *d3 = d1->diaMult(d2,v1);
-
       d3->print();
-
 
 
     delete dia;
@@ -564,8 +568,6 @@ void  diagonalTest(int dim, int dl)
     delete d2;
     delete v1;
     delete d3;
-
-
 }
 
 void diagonalSolveTest(int dim, int dl)
@@ -596,7 +598,7 @@ void diagonalSolveTest(int dim, int dl)
     delete d1;
     delete d2;
     delete v1;
-    delete f;
+    delete []f;
     delete d;
     delete result;
     delete ts;
@@ -835,31 +837,27 @@ void generalSolveTest(int dim, int dl)
     bool r13 = result4->isequal(vOne);
     cout<<"dia1&dia2&csr&csc: "<<r10<< ","<< r11 << ","<< r12<<","<< r13<<"\n";
 
+    delete dia;
     delete v1;
+    delete vOne;
+    delete s;
     delete cr1;
     delete rs;
+    delete result1;
     delete rs2;
 //    delete cs;
     delete cc1;
-    delete result1;
+    delete result2;
     delete mcc2;
-    delete vOne;
-
-    delete dia;
     delete d1;
     delete d2;
-    delete f;
+    delete []f;
   //  delete d;
     delete result3;
     delete ts1;
     delete d3;
-
     delete result4;
     delete ts2;
-    delete s;
-
-
-
 }
 
 void generalMultTest1(int dim, int dl)
@@ -896,6 +894,7 @@ void generalMultTest1(int dim, int dl)
         //execution time-end
         //result1->print();
         tm1.push_back(durationSym1);
+        delete result1;
     }
     sort(tm1.begin(), tm1.end());
     cout << "multiply(CSR)"<<",";
@@ -919,6 +918,7 @@ void generalMultTest1(int dim, int dl)
         //execution time-end
         // result2->print();
         tm2.push_back(durationSym2);
+        delete result2;
     }
     sort(tm2.begin(), tm2.end());
     cout << "multiply(CSC)"<<",";
@@ -943,13 +943,13 @@ void generalMultTest1(int dim, int dl)
         //execution time-end
         //  result3->print();
         tm3.push_back(durationSym3);
+        delete result3;
     }
     sort(tm3.begin(), tm3.end());
     cout << "multiply(dia1)"<<",";
     for (auto x : tm3)
         cout << x << " ,";
     cout<<"\n";
-
 
 // diagonal2
     Matrix *m2 = d1->diaStore2(dia1, 1);
@@ -964,6 +964,7 @@ void generalMultTest1(int dim, int dl)
        // cout << "exacution time (dia2):" << durationSym4 << "\n";
         //result4->print();
         tm4.push_back(durationSym4);
+        delete result4;
     }
     sort(tm4.begin(), tm4.end());
     cout << "multiply(dia2)"<<",";
@@ -984,16 +985,11 @@ void generalMultTest1(int dim, int dl)
     delete dia1;
     delete cr1;
     delete v1;
-  //  delete result1;
-  //  delete result2;
     delete cc1;
     delete d1;
     delete d2;
-  //  delete result3;
     delete m2;
-  //  delete result4;
     //  delete d4;
-
 }
 
 void generalSolveTest1(int dim, int dl)
@@ -1024,7 +1020,7 @@ void generalSolveTest1(int dim, int dl)
     for(int i=0; i<5; i++)
     {
         start = std::chrono::system_clock::now();
-        Matrix *result1 = s->solve(cr1,v1); //TODO: did you delete result1? /checked
+        Matrix *result1 = s->solve(cr1,v1);
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym1 = elapsed_seconds.count();
@@ -1051,7 +1047,7 @@ void generalSolveTest1(int dim, int dl)
     for(int i=0; i<5; i++)
     {
         start = std::chrono::system_clock::now();
-        Matrix *result2 = s->solve(cc1,v1); //TODO result2? /checked
+        Matrix *result2 = s->solve(cc1,v1);
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym2 = elapsed_seconds.count();
@@ -1081,7 +1077,7 @@ void generalSolveTest1(int dim, int dl)
     for(int i=0; i<5; i++)
     {
         start = std::chrono::system_clock::now();
-        Matrix *result3 = s->solve(d2,v1,f,dl); //TODO /checked
+        Matrix *result3 = s->solve(d2,v1,f,dl);
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym3 = elapsed_seconds.count();
@@ -1107,7 +1103,7 @@ void generalSolveTest1(int dim, int dl)
     for(int i=0; i<5; i++)
     {
         start = std::chrono::system_clock::now();
-        Matrix *result4 = s->solve(d3,v1,dl);//number of diagonals //TODO: delete? /checked
+        Matrix *result4 = s->solve(d3,v1,dl);//number of diagonals
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym4 = elapsed_seconds.count();
@@ -1139,26 +1135,27 @@ void generalSolveTest1(int dim, int dl)
     bool r13 = result4->isequal(vOne);
     cout<<"dia1&dia2&csr&csc: "<<r10<< ","<< r11 << ","<< r12<<","<< r13<<"\n";*/
 
+    delete dia;
     delete v1;
+    delete vOne;
+    delete s;
     delete cr1;
     delete rs;
-   // delete rs2;
-//    delete cs;
     delete cc1;
-  //  delete result1;
-   // delete mcc2;
-    delete vOne;
-
-    delete dia;
     delete d1;
     delete d2;
-    delete []f; //TODO delete []f? /checked
+    delete []f;
+    delete d3;
+
+
+   // delete rs2;
+//    delete cs;
+  //  delete result1;
+   // delete mcc2;
     //  delete d;
    // delete result3;
   //  delete ts1;
-    delete d3;
-
   //  delete result4;
    // delete ts2;
-    delete s;
+
 }

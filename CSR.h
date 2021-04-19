@@ -20,6 +20,7 @@ public:
     int *idx;
     int *nzRow;
 
+
     CSR(int r, int c, int n);
 
     void printArray(double *arr);

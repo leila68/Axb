@@ -21,11 +21,24 @@ CSC::CSC(int r, int c, int nnz, int *p, int *idx, double *val)
     row = r;
     col = c;
     nonzero = nnz;
-    ptr = p;
-    this->idx = idx;
-    this->val = val;
+    ptr = new int[col+1]();
+    idx = new int[nonzero]();
+    val = new double [nonzero]();
 
-}
+    for (int i = 0; i < col+1; ++i)
+    {
+      ptr[i] = p[i];
+    }
+    for (int i = 0; i < nonzero; ++i)
+    {
+        this->idx[i] = idx[i];
+    }
+    for (int i = 0; i < nonzero; ++i)
+    {
+        this->val[i] = val[i];
+    }
+
+    }
 CSC::CSC(Matrix *m)
 {
   initializeWithMatirx(m);
@@ -50,6 +63,7 @@ void CSC::Triplet()
        }
    }
 }
+
 Matrix* CSC::turnToRegular()
 {
     Matrix *y = new Matrix(row, col, "turn to regular:");
@@ -74,10 +88,10 @@ void CSC::initializeWithMatirx(Matrix *m)
     col = m->colNo;
     nonzero = m->getNonzero();
 
-    ptr = new int[col + 1](); //TODO des /checked
-    idx = new int[nonzero](); // TODO  /checked
-    val = new double[nonzero](); // TODO  /checked
-    nzcol = new int[col]; //TODO delete this  /checked
+    ptr = new int[col + 1]();
+    idx = new int[nonzero]();
+    val = new double[nonzero]();
+    nzcol = new int[col];
 
     ptr[0] = 0;
     for (int i = 0; i < col; i++)

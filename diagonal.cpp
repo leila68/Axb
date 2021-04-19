@@ -21,7 +21,7 @@ diagonal::diagonal(int d)
 }
 diagonal::~diagonal()
 {
-
+   delete []offset;
 }
 
 int * diagonal::offsetCompute(int a)

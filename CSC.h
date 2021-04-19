@@ -14,6 +14,7 @@ class CSC
   int nonzero = 0;
 
 
+
     CSC(int r, int c, int nnz);
 
 public:
@@ -31,7 +32,7 @@ public:
     double *val;
     int *ptr;
     int *idx;
-
+    int *nzcol;
     CSC(Matrix *m);
 };
 

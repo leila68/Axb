@@ -25,34 +25,39 @@ void  csrFileTest(string f1);
 void  cscFileTest(string f1);
 void  RunAll1(string f1);
 void  RunAll2(string f1);
-void diagonalTest(int dim, int d);
+void diagonalTest(int dim, int dl);
 void diagonalSolveTest(int dim, int dl);
 void diagonal2Test(int dim, int dl);
 void generalMultTest(int dim, int dl);
 void generalSolveTest(int dim, int dl);
 void generalMultTest1(int dim, int dl);
 void generalSolveTest1(int dim, int dl);
-
+void evaluatingFormatsMatrices(string f1);
 
 int main(int argc, char *argv[])
 {
-//
     srand((unsigned)time(NULL));
-    //cout<<argv[0];
 
-    std::ifstream f (argv[1]);
-    std::string name;
-
-   while(std::getline(f, name) )
+    if(argc == 2)
+     {
+         string f1 = argv[1];
+         evaluatingFormatsMatrices(f1);
+     }
+   if(argc > 2)
     {
-       if (name.empty())
-       {
-           break;
-       }
-      // cout<<name<<"\n";
-       RunAll2(name);
+       int dim =  stoi(argv[1]);
+       int dl = stoi(argv[2]);
+
+
+        // diagonalTest(dim,dl);
+        // diagonalSolveTest(dim,dl);
+        // diagonal2Testdim,dl);
+        //  generalMultTest(dim,dl);
+        //  generalSolveTest(dim,dl);
+        // generalMultTest1(dim,dl);//this function repeat each multiply 5 times
+         generalSolveTest1(dim,dl);//this function repeat each solve 5 times
     }
-  f.close();
+
 
     //Diagonal should be odd number dim: number of rows  - dl=number of diagonal
 
@@ -61,16 +66,25 @@ int main(int argc, char *argv[])
    //  triangularTest(7);
    //  csrTest(10);
    // csrFileTest(f1);
-   //cscFileTest(f1);
-    RunAll1(name);
-  //diagonalTest(15,5);
-   // diagonalSolveTest(50,11);
-   // diagonal2Test(10,5);
- //  generalMultTest(100,17);
-  //  generalSolveTest(100,19);
-    // generalMultTest1(1000,19);//this function repeat each multiply 5 times
-    //generalSolveTest1(1000,27);//this function repeat each solve 5 times
+  // cscFileTest(f1);
+
     return 0;
+}
+void evaluatingFormatsMatrices(string f1)
+{
+    std::ifstream f (f1);
+    std::string name;
+
+    while(std::getline(f, name) )
+    {
+        if (name.empty())
+        {
+            break;
+        }
+        // cout<<name<<"\n";
+        RunAll2(name);
+    }
+    f.close();
 }
 
 void addMultTest(int dim)
@@ -528,12 +542,12 @@ void  RunAll2(string f1)
 
 }
 
-void  diagonalTest(int dim, int d)
+void  diagonalTest(int dim, int dl)
 {
       Matrix *dia = new Matrix(dim,dim," ");
-      dia->Random(d,"3diagonal");
+      dia->Random(dl,"3diagonal");
       dia->print();
-      diagonal *d1 = new diagonal(dim,dim,d);
+      diagonal *d1 = new diagonal(dim,dim,dl);
       Matrix *d2 = d1->diaStore(dia,-1);
       d1->offsetCompute(-1);
       Matrix *v1 = new Matrix(dim,1,"vector:");

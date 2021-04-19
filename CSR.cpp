@@ -25,12 +25,22 @@ CSR::CSR(int r, int c, int nz, int *p, int *ind, double *x)
     row = r;
     col = c;
     nonzero = nz;
-    ptr = new int[r+1]();
-    idx = new int[nz]();
-    val = new double[nz]();
-    ptr = p;
-    idx = ind;
-    val=x;
+    ptr = new int[row+1]();
+    idx = new int[nonzero]();
+    val = new double[nonzero]();
+
+    for(int i=0; i<row+1; i++)
+    {
+        ptr[i] = p[i];
+    }
+    for(int i=0; i<nonzero; i++)
+    {
+        idx[i] = ind[i];
+    }
+    for(int i=0; i<nonzero; i++)
+    {
+        val[i] = x[i];
+    }
 
 }
 CSR::~CSR()
@@ -70,12 +80,11 @@ void CSR::initializeWithMatirx1(Matrix *m)//Private
     col = m->colNo;
     nonzero = m->getNonzero();
 
-    ptr = new int[row + 1](); //TODO delete this in destructor /checked
-    idx = new int[nonzero](); // TODO: delete thisin destructor /checked
-    val = new double[nonzero](); //delete this in destructor //TODO /checked
-    nzRow = new int[row]; //TODO: delete this /checked
+    ptr = new int[row + 1]();
+    idx = new int[nonzero]();
+    val = new double[nonzero]();
+    nzRow = new int[row];
     ptr[0] = 0;
-   // int *first = new int[row];
 
     for (int i = 0; i < row; i++)
     {
@@ -134,7 +143,7 @@ Matrix* CSR::csrMult()
         result->array[i][0] = s;
         s = 0;
     }
-
+    delete v;
     return result;
 }
 
@@ -142,7 +151,6 @@ Matrix* CSR::csrMult(Matrix *v)
 {
     Matrix *result = new Matrix(row, 1, "result for testing csrSolve:");
     double s = 0;
-
 
     for (int i=0; i<row; i++)
     {
@@ -155,7 +163,6 @@ Matrix* CSR::csrMult(Matrix *v)
         s = 0;
     }
 
-
     return result;
 }
 
@@ -163,10 +170,11 @@ void CSR::turntoCSR()
 {
 
     int *colIdx = new int[nonzero];
+    int *rowNum = new int [row+1]();
+    int *ptrR = new int[row+1]();
     int *idxR = new int[nonzero]();
     double *valR = new double [nonzero]();
-    int *ptrR = new int[row+1]();
-    int *rowNum = new int [row+1]();
+
     int k = 0;
     int count = 0;
      for(int i=0; i<col; i++)
@@ -192,14 +200,28 @@ void CSR::turntoCSR()
         rowNum[i]=count;
         count = 0;
     }
-    rowNum[col+1] = k+1;
+    rowNum[col] = k+1;
     ptrR[0]=0;
     for (int i = 1; i < row+1; i++)
     {
         ptrR[i] = ptrR[i-1]+rowNum[i-1];
     }
 
-    ptr = ptrR;
-    val = valR;
-    idx = idxR;
+    //ptr = ptrR;
+   // val = valR;
+   // idx = idxR;
+    for(int i=0; i<row+1; i++)
+    {
+        ptr[i] = ptrR[i];
+    }
+    for(int i=0; i<nonzero; i++)
+    {
+        val[i] = valR[i];
+    }
+    for(int i=0; i<nonzero; i++)
+    {
+        idx[i] = idxR[i];
+    }
+    delete []colIdx;
+    delete []rowNum;
 }

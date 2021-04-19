@@ -16,7 +16,7 @@ CSC::CSC(int r, int c, int nnz)
     val = new double[nonzero]();
 
 }
-CSC::CSC(int r, int c, int nnz, int *p, int *idx, double *val)
+CSC::CSC(int r, int c, int nnz, int *p, int *d, double *v)
 {
     row = r;
     col = c;
@@ -31,14 +31,14 @@ CSC::CSC(int r, int c, int nnz, int *p, int *idx, double *val)
     }
     for (int i = 0; i < nonzero; ++i)
     {
-        this->idx[i] = idx[i];
+        idx[i] = d[i];
     }
     for (int i = 0; i < nonzero; ++i)
     {
-        this->val[i] = val[i];
+        val[i] = v[i];
     }
 
-    }
+ }
 CSC::CSC(Matrix *m)
 {
   initializeWithMatirx(m);

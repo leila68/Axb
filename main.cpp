@@ -1024,13 +1024,14 @@ void generalSolveTest1(int dim, int dl)
     for(int i=0; i<5; i++)
     {
         start = std::chrono::system_clock::now();
-        Matrix *result1 = s->solve(cr1,v1);
+        Matrix *result1 = s->solve(cr1,v1); //TODO: did you delete result1? /checked
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym1 = elapsed_seconds.count();
        // cout << "exacution time (CSR Solve):" << durationSym1 << "\n";
         // result1->print();
         t1.push_back(durationSym1);
+        delete result1;
     }
     sort(t1.begin(), t1.end());
     cout << "solve(CSR)"<<",";
@@ -1050,13 +1051,14 @@ void generalSolveTest1(int dim, int dl)
     for(int i=0; i<5; i++)
     {
         start = std::chrono::system_clock::now();
-        Matrix *result2 = s->solve(cc1,v1);
+        Matrix *result2 = s->solve(cc1,v1); //TODO result2? /checked
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym2 = elapsed_seconds.count();
         //cout << "exacution time (CSC Solve):" << durationSym2 << "\n";
         //result2->print();
         t2.push_back(durationSym2);
+        delete result2;
     }
    sort(t2.begin(),t2.end());
     cout << "solve(CSC)"<<",";
@@ -1079,13 +1081,14 @@ void generalSolveTest1(int dim, int dl)
     for(int i=0; i<5; i++)
     {
         start = std::chrono::system_clock::now();
-        Matrix *result3 = s->solve(d2,v1,f,dl);
+        Matrix *result3 = s->solve(d2,v1,f,dl); //TODO /checked
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym3 = elapsed_seconds.count();
         //cout << "exacution time (diagonal1 Solve):" << durationSym3 << "\n";
         // result3->print();
         t3.push_back(durationSym3);
+        delete result3;
     }
     sort(t3.begin(), t3.end());
     cout << "solve(dia1)"<<",";
@@ -1104,13 +1107,14 @@ void generalSolveTest1(int dim, int dl)
     for(int i=0; i<5; i++)
     {
         start = std::chrono::system_clock::now();
-        Matrix *result4 = s->solve(d3,v1,dl);//number of diagonals
+        Matrix *result4 = s->solve(d3,v1,dl);//number of diagonals //TODO: delete? /checked
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym4 = elapsed_seconds.count();
       // cout << "exacution time (diagonal2 Solve):" << durationSym4 << "\n";
         // result4->print();
         t4.push_back(durationSym4);
+        delete result4;
     }
     sort(t4.begin(), t4.end());
     cout << "solve(dia2)"<<",";
@@ -1148,7 +1152,7 @@ void generalSolveTest1(int dim, int dl)
     delete dia;
     delete d1;
     delete d2;
-    delete f;
+    delete []f; //TODO delete []f? /checked
     //  delete d;
    // delete result3;
   //  delete ts1;

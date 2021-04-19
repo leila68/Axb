@@ -48,6 +48,7 @@ int Matrix::getNonzero()
     }
     return zero;
 }
+
 int Matrix::getRow()
 {
     return rowNo;
@@ -75,10 +76,7 @@ void Matrix::One()
     {
         for (int j = 0; j < colNo; j++)
         {
-
-
             array[i][j] = 1;
-
         }
     }
 
@@ -113,7 +111,6 @@ void Matrix::Random(int z, string s)
 
                 array[j + i][j] = rand() % 10+1;
             }
-
         }
     }
 }
@@ -299,11 +296,11 @@ bool Matrix::isequal(Matrix *a)
         {
             for (int j = 0; j < colNo; j++)
             {
-                if ( isinf(abs(a->array[i][j] - array[i][j])) )//TODO
+                if ( isinf(abs(a->array[i][j] - array[i][j])) )
                 {
                     return false;
                 }
-                if (abs(a->array[i][j] - array[i][j]) > 1e-6 )//TODO
+                if (abs(a->array[i][j] - array[i][j]) > 1e-6 )
                 {
                     return false;
                 }

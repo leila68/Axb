@@ -18,6 +18,7 @@ public:
     double *val;
     int *ptr;
     int *idx;
+    int *nzRow;
 
     CSR(int r, int c, int n);
 

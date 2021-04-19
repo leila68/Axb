@@ -16,7 +16,7 @@ class CSC
   CSC(int r, int c, int nnz);
 
 public:
-    CSC(int r, int c, int nnz, int *p, int *idx, double *val);
+    CSC(int r, int c, int nnz, int *p, int *d, double *v);
 
     ~CSC();
     void Triplet();

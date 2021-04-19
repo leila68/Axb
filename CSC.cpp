@@ -32,7 +32,10 @@ CSC::CSC(Matrix *m)
 }
 CSC::~CSC()
 {
-
+    delete ptr;
+    delete idx;
+    delete val;
+    delete nzcol;
 }
 void CSC::Triplet()
 {
@@ -71,13 +74,12 @@ void CSC::initializeWithMatirx(Matrix *m)
     col = m->colNo;
     nonzero = m->getNonzero();
 
-    ptr = new int[col + 1]();
-    idx = new int[nonzero]();
-    val = new double[nonzero]();
-    int *nzcol = new int[col];
-    ptr[0] = 0;
-    // int *first = new int[row];
+    ptr = new int[col + 1](); //TODO des /checked
+    idx = new int[nonzero](); // TODO  /checked
+    val = new double[nonzero](); // TODO  /checked
+    nzcol = new int[col]; //TODO delete this  /checked
 
+    ptr[0] = 0;
     for (int i = 0; i < col; i++)
     {
         s = 0;

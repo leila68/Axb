@@ -86,7 +86,7 @@ Matrix* TriangularSolve::solve(Matrix *L, Matrix *d, int *offset, int dia )
     int n = dia/2 + 1;
 
 
-    Matrix *r = new Matrix(rowNo,rowNo, "row index:");
+    Matrix *r = new Matrix(rowNo,rowNo, "row index:"); //TODO /checked
     Matrix *y = new Matrix(rowNo, 1, "y(Unknowns):");
 
     for(int i=0; i<rowNo; i++)
@@ -125,6 +125,7 @@ Matrix* TriangularSolve::solve(Matrix *L, Matrix *d, int *offset, int dia )
         s = 0;
     }
 
+    delete r;
     return y;
 }
 

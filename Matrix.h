@@ -60,7 +60,7 @@ public:
 
     void LowerTriangular();
 
-    bool Matrix::isequal(Matrix *a);
+    bool isequal(Matrix *a);
 
 
 };

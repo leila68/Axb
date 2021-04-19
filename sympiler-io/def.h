@@ -37,7 +37,7 @@
 //  double min_dbl = -max_dbl;
 
  template <class T> bool is_equal(T a, T b, double threshold = 1e-6){
-  if(std::isnan<double>(double(a)) || std::isnan<double>(double(b)))
+  if(std::isnan((double)a) || std::isnan((double)b) )
    return false;
   return !(std::abs(a - b) > threshold);
  }

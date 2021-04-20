@@ -48,7 +48,7 @@ CSR::~CSR()
     delete []ptr ;
     delete []idx ;
     delete []val;
-    delete []nzRow;
+
 }
 void CSR::triplet()
 {
@@ -106,6 +106,8 @@ void CSR::initializeWithMatirx1(Matrix *m)//Private
     {
         ptr[i] = ptr[i - 1] + nzRow[i - 1];
     }
+
+    delete []nzRow;
 }
 Matrix* CSR::turnToRegular()
 {
@@ -224,4 +226,7 @@ void CSR::turntoCSR()
     }
     delete []colIdx;
     delete []rowNum;
+    delete []ptrR;
+    delete []valR;
+    delete []idxR;
 }

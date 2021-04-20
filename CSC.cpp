@@ -48,7 +48,7 @@ CSC::~CSC()
     delete []ptr;
     delete []idx;
     delete []val;
-    delete []nzcol;
+
 }
 void CSC::Triplet()
 {
@@ -113,6 +113,7 @@ void CSC::initializeWithMatirx(Matrix *m)
     {
         ptr[i] = ptr[i - 1] + nzcol[i - 1];
     }
+    delete []nzcol;
 }
 
 Matrix* CSC::cscMult(Matrix *v)

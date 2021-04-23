@@ -7,7 +7,7 @@ There are several compressed formats for storing sparse matrices. Four different
 compressed sparse row (CSR), compressed sparse column(CSC), and two different diagonal format. To illustrate dofferent 
 formats, an example shown in Figure1 is used.
 
-![sparse matrix](D:\github\Axb\doc\mtx.png "mtx")
+![sparse matrix](doc/mtx.png"mtx")
 <br>
 
 Figure 1: a sparse matrix with a rows and column (4*4) and 7 non-zero elements

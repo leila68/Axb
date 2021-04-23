@@ -45,11 +45,11 @@ Size of *Offset* shows the number of diagonals. *offset[i]=0* is main diagonal. 
 is sub-diagonal.<br>
 dd:
 <br>
-![sparse matrix](https://github.com/leila68/Axb/blob/master/doc/mtx.png "mtx")
+![sparse matrix](https://github.com/leila68/Axb/blob/master/doc/dd.png "mtx")
 <br>
 offset:
 <br>
-![sparse matrix](https://github.com/leila68/Axb/blob/master/doc/mtx.png "mtx")
+![sparse matrix](https://github.com/leila68/Axb/blob/master/doc/ofset.png "mtx")
 <br>
 
 <p>

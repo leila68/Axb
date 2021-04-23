@@ -7,6 +7,7 @@ There are several compressed formats for storing sparse matrices. Four different
 compressed sparse row (CSR), compressed sparse column(CSC), and two different diagonal format. To illustrate dofferent 
 formats, an example shown in Figure1 is used.
 <br>
+
 ![sparse matrix](https://github.com/leila68/Axb/blob/master/doc/mtx.png "mtx")
 <br>
 
@@ -45,11 +46,13 @@ Size of *Offset* shows the number of diagonals. *offset[i]=0* is main diagonal. 
 is sub-diagonal.<br>
 dd:
 <br>
+
 ![sparse matrix](https://github.com/leila68/Axb/blob/master/doc/dd.png "mtx")
 <br>
 offset:
 <br>
-![sparse matrix](https://github.com/leila68/Axb/blob/master/doc/ofset.png "mtx")
+
+![sparse matrix](https://github.com/leila68/Axb/blob/master/doc/offset.png "mtx")
 <br>
 
 <p>

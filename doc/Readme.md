@@ -1,25 +1,24 @@
 # Axb
-
 ---
 ### Sparse Storage Formats
 <p style='text-align: justify;'>
-There are several compressed formats for storing sparse matrices. Four different format are explained in this section. 
-compressed sparse row (CSR), compressed sparse column(CSC), and two different diagonal format. To illustrate dofferent 
+There are several compressed formats for storing sparse matrices. Four different formats are explained in this section. 
+compressed sparse row (CSR), compressed sparse column(CSC), and two different diagonal formats. To illustrate different 
 formats, an example shown in Figure1 is used.
 <br>
 
 ![sparse matrix](https://github.com/leila68/Axb/blob/master/doc/mtx.png "mtx")
-<br>
 
-Figure 1: a sparse matrix with a rows and column (4*4) and 7 non-zero elements
+Figure 1: a sparse matrix with 4 rows and 4 columns and 7 non-zero elements
 
 **CSR:** Storing the non-zero elements of a sparse matrix into a linear array *val* is done by going over each row in
 order,and storing the non-zero elements to a linear array in the order they appear in the walk. Location and column
 indices of non-zero elements of the *val* array in order stored in *row_ptr* and *col_idx*. The first element of row *i* 
-is stored *val[row_ptr[i]]* and the column index of the non-zero element in *val[i]* is stored in *col_idx*. <br>
+is stored *val[row_ptr[i]]* and the column index of the non-zero element in *val[i]* is stored in *col_idx*. </p>
 val:[1,3,5,4,6,2,7]<br>
 col_ptr:[0,2,4,6,7]<br>
 row_idx:[0,1,1,2,2,3,3]<br>
+
 For the matrix shown in Figure 1, the non-zero element 5 in row 1 and column 1 is stored in *val[row_ptr[1]+1]* and its 
 column index is stored in *col_idx[row_ptr[1]+1]* where one is the offset of the element from the first element in row one.
 
@@ -27,7 +26,7 @@ column index is stored in *col_idx[row_ptr[1]+1]* where one is the offset of the
 and writing the non-zero elements to a linear array in the order they appear in the walk. Location and row indices of 
 non-zero elements of the *val* array are in order stored in *col_ptr* and *row_idx*. The first element of column *i* is stored
 in val[col_ptr[i]] and the row index of the non-zero elements in *val[j]* is stored in *row_idx[j]*.
-<br>
+
 val:[1,3,5,4,6,2,7]<br>
 col_ptr:[0,2,4,6,7]<br>
 row_idx:[0,1,1,2,2,3,3]<br>
@@ -97,7 +96,8 @@ and multiply each element by corresponding value of vector.
 To solve *Ly = d* in which *L* is lower triangular matrix that is stored in CSC, CSC or Diagonal format, *y* is unknowns
 vector and *d* is the result, we provided different
 implementation for different formats to find *y*. In the following we explain how we solve the equation 
-iin different format of *L*. 
+
+in different format of *L*. 
 
 **CSR:** *L* is a sparse matrix in CSR storage format. In this format, we compute all unknowns by order.
 It means we first compute *y0* then we use that to calculate *y1* and we continue until we find the last unknown.
@@ -117,4 +117,4 @@ this implementation is more efficient than diagonal1. Because special locality f
 This is because to find *yi* we only  process *row i* in *dm* matrix.
 
 
-<p>
+</p>

@@ -94,9 +94,10 @@ elements of one row. *dm[0,*]* contains no-zero element of first row of matrix. 
 and multiply each element by corresponding value of vector.
 
 ####  Sparse Triangular Solve:For Different Formats
-To solve *Ly = d* in which *L* is lower triangular matrix, *y* is unknowns vector and *d* is the result. *L* is  
- in CSC, CSC or Diagonal format, and we know *d*. Then we will find *y*. In the following we explain how we solve the equation 
-in different format of *L*. 
+To solve *Ly = d* in which *L* is lower triangular matrix that is stored in CSC, CSC or Diagonal format, *y* is unknowns
+vector and *d* is the result, we provided different
+implementation for different formats to find *y*. In the following we explain how we solve the equation 
+iin different format of *L*. 
 
 **CSR:** *L* is a sparse matrix in CSR storage format. In this format, we compute all unknowns by order.
 It means we first compute *y0* then we use that to calculate *y1* and we continue until we find the last unknown.

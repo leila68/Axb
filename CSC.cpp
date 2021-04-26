@@ -124,7 +124,7 @@ Matrix* CSC::cscMult(Matrix *v)
            {
                for (int j=ptr[i]; j<ptr[i+1]; j++)
                {
-                    result->array [idx[j]][0] += val[j]*v->array[i][0] ;
+                    result->array[idx[j]][0] += val[j]*v->array[i][0];
 
                }
            }

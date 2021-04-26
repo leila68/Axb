@@ -135,7 +135,6 @@ Matrix* TriangularSolve::solve(Matrix *L, Matrix *d, int dia)
     double s = 0;
     int c=0;
     int d1 = dia/2;
-//    y->array[0][0] = d->array[0][0] / L->array[0][0];
 
     for(int i=0; i<rowNo; i++)
     {

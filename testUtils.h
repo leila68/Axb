@@ -35,8 +35,8 @@ void evaluatingFormatsMatrices(string f1)
         {
             break;
         }
-
-        RunAll2(name);
+        RunAll1(name);
+       // RunAll2(name);
     }
     f.close();
 }
@@ -278,6 +278,8 @@ void  cscFileTest(string f1)
 
 void  RunAll1(string f1)
 {
+    vector<double> tm1;
+    vector<double> tm2;
     //CSR
     std::string in_path_ = f1;
     std::ifstream fin(in_path_);
@@ -285,96 +287,65 @@ void  RunAll1(string f1)
     read_mtx_csc_real(fin, H, true);
 
     //print of csc file
-    CSR *ccf = new CSR(H->n, H->m, H->nnz, H->p, H->i, H->x);
-    //ccf->triplet();
+    CSR *sr = new CSR(H->n, H->m, H->nnz, H->p, H->i, H->x);
+    //sr->triplet();
+    Matrix *v1 = new Matrix(H->n,1,"v1:");
+    v1->Random();
 
     //turn to csr
-    // cout<<"CSR:"<<"\n";
-    ccf->turntoCSR();
-    // ccf->triplet();
+    sr->turntoCSR();
 
-    //csc file Solve
-    Matrix *v = new Matrix(H->n,1,"vector:");
-    v->Random();
-    // v->print();
-    TriangularSolve *rs2 = new TriangularSolve(H->n);
-    //time
+    //csc multiply
     std::chrono::time_point<std::chrono::system_clock> start, end;
     std::chrono::duration<double> elapsed_seconds;
-    start = std::chrono::system_clock::now();
-    Matrix *result2 = rs2->solve( ccf, v);
-    end = std::chrono::system_clock::now();
-    elapsed_seconds = end - start;
-    double durationSym1 = elapsed_seconds.count();
-
-
-    // cout << "exacution time (CSR Solve):" << durationSym1 << "\n";
-    //result2->print();
-
-    // csr Solve,Test the equation(ccf*y=rhcr)
-    Matrix *rs3 = ccf->csrMult(result2);
-    //  rs3->print();
-    bool r2 = rs3->isequal(v);
-    // cout<<"the result of Triangular solve is(CSR): "<<r2 <<"\n";
-
-    //multiply of csc(file) and vector(file)
-    //Matrix *mf = cf->turnToRegular();
-    // mf->print();
-    //Matrix *vf = cf->csrMult();
-    //  vf->print();
-
+    for(int i=0; i<5; i++)
+    {
+        start = std::chrono::system_clock::now();
+           Matrix *result1 = sr->csrMult(v1);
+        end = std::chrono::system_clock::now();
+        elapsed_seconds = end-start;
+        double durationSym1=elapsed_seconds.count();
+        // cout<<"exacution time(CSR):"<< durationSym1<<"\n";
+        //execution time-end
+        //result1->print();
+        tm1.push_back(durationSym1);
+        delete result1;
+    }
+    sort(tm1.begin(), tm1.end());
+    cout << "multiply(CSR)"<<",";
+    for (auto x : tm1)
+        cout << x << " ,";
+    cout<<"\n";
 
     //CSC
+    //save matrix in csc format
+    CSC *sc = new CSC(H->n, H->m, H->nnz, H->p, H->i, H->x);
+    // sc->Triplet();
 
-    // std::string in_path_ = f1 ;
-    //  std::ifstream fin(in_path_);
-    //  format::CSC *H;
-    //  read_mtx_csc_real(fin, H, true);
+    //execution time-start
+    for(int i=0; i<5; i++)
+    {
+        start = std::chrono::system_clock::now();
+          Matrix *result2 = sc->cscMult(v1);
+        end = std::chrono::system_clock::now();
+        elapsed_seconds = end-start;
+        double durationSym2=elapsed_seconds.count();
+        // cout<<"exacution time(CSC):"<< durationSym2 <<"\n";
+        //execution time-end
+        // result2->print();
+        tm2.push_back(durationSym2);
+        delete result2;
+    }
+    sort(tm2.begin(), tm2.end());
+    cout << "multiply(CSC)"<<",";
+    for (auto x : tm2)
+        cout << x << " ,";
+    cout<<"\n";
 
-    //  csc print file
-
-    CSC *cc = new CSC(H->n, H->m, H->nnz, H->p, H->i, H->x);
-    // cc->Triplet();
-    Matrix *ccr = cc->cscMult(v);
-
-    // ccr->print();
-
-    //csc Solve
-    TriangularSolve *ccs = new TriangularSolve(H->n);
-    //time
-
-    start = std::chrono::system_clock::now();
-    Matrix *result3 = ccs->solve(cc,v);
-    end = std::chrono::system_clock::now();
-    elapsed_seconds = end - start;
-    double durationSym2 = elapsed_seconds.count();
-
-    //PRINT All
-    //cout<<"csr"<<","<<"csc"<<","<<"\n";
-    cout << durationSym1<<"," << durationSym2 << "\n";
-    //cout<<"csc (solve):"<<"\n";
-    // result3->print();
-    // cout<<"print mcc again";
-
-
-    //csc Solve,Test
-    Matrix *mcc2 = cc->cscMult(result3);
-    //  mcc2->print();
-    bool r3 = v->isequal(mcc2);
-    // cout<<"the result of testing Triangular solve  (CSC) is: "<<r2 <<"\n";
-
-    delete H;
-    delete ccf;
-    delete v;
-    delete rs2;
-    delete result2;
-    delete rs3;
-    //CSC
-    delete cc;
-    delete ccr;
-    delete ccs;
-    delete result3;
-    delete mcc2;
+  delete H;
+  delete sr;
+  delete v1;
+  delete sc;
 
 }
 
@@ -408,7 +379,7 @@ void  RunAll2(string f1)
     for(int i=0; i<5; i++)
     {
         start = std::chrono::system_clock::now();
-        Matrix *result2 = rs2->solve( ccf, v);
+          Matrix *result2 = rs2->solve( ccf, v);
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym1 = elapsed_seconds.count();
@@ -418,12 +389,10 @@ void  RunAll2(string f1)
         delete result2;
     }
     sort(t1.begin(), t1.end());
-    cout << "Sorted(CSR)"<<",";
+    cout << "Solve(CSR)"<<",";
     for (auto x : t1)
         cout << x << " ,";
     cout<<"\n";
-
-
 
     // csr Solve,Test the equation(ccf*y=rhcr)
     //  Matrix *rs3 = ccf->csrMult(result2);
@@ -459,7 +428,7 @@ void  RunAll2(string f1)
     for(int i=0; i<5; i++)
     {
         start = std::chrono::system_clock::now();
-        Matrix *result3 = ccs->solve(cc,v);
+          Matrix *result3 = ccs->solve(cc,v);
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym2 = elapsed_seconds.count();
@@ -468,7 +437,7 @@ void  RunAll2(string f1)
         delete result3;
     }
     sort(t2.begin(), t2.end());
-    cout << "Sorted(CSC)"<<",";
+    cout << "Solve(CSC)"<<",";
     for (auto x : t2)
         cout << x << " ,";
     cout<<"\n";
@@ -954,16 +923,17 @@ void generalSolveTest1(int dim, int dl)
     vector<double> t3;
     vector<double> t4;
     Matrix *dia = new Matrix(dim,dim," ");
-    dia->Random(dl,"3diagonal");
+    dia->Random(dl,"diagonal");
     dia->LowerTriangular();
     // dia->print();
-    Matrix *v1 = dia->addTest(); // for testing vOne
+   // Matrix *v1 = dia->addTest(); // for testing vOne
     //v1->print();
-    Matrix *vOne = new Matrix(dim,1,"v for test"); // for testing with vOne
-    vOne->One();
-    // Matrix *v1 = new Matrix(100, 1, "rhs");
-    //  v1->Random();
+   // Matrix *vOne = new Matrix(dim,1,"v for test"); // for testing with vOne
+   // vOne->One();
+     Matrix *v1 = new Matrix(dim, 1, "rhs");
+     v1->Random();
     // v1->print();
+
     TriangularSolve *s = new TriangularSolve(dim);
 
 //csrSolve
@@ -1091,14 +1061,12 @@ void generalSolveTest1(int dim, int dl)
 
     delete dia;
     delete v1;
-    delete vOne;
     delete s;
     delete cr1;
     delete rs;
     delete cc1;
     delete d1;
     delete d2;
-    delete []f;
     delete d3;
 
 

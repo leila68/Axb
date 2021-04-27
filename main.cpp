@@ -12,7 +12,7 @@
 #include "CSC.h"
 #include "diagonal.h"
 #include <chrono>
-#include "testUtilize.h"
+#include "testUtils.h"
 
 
 //#include "stdafx.h"

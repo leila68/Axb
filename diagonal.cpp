@@ -48,11 +48,6 @@ int * diagonal::offsetCompute(int a)
         }
     }
 
-   /*  for (int j = 0; j < dNum; ++j)
-   {
-       cout<<offset[j];
-       cout<<"\n";
-   }*/
    cout<<"\n";
     return offset;
 }

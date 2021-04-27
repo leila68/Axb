@@ -1,7 +1,7 @@
 
 ## Axb: Sparsity-Aware Storage Format Selection
 
-This repository provides a prototype for the [paper.pdf]() and explores the effect of 
+This repository provides a prototype for the [Axb_paper.pdf]() and explores the effect of 
 sparse storage formats on different sparse kernels. 
 
 ### Prerequisites:

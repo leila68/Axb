@@ -105,8 +105,9 @@ are dense vectors. *A* can be stored in any of the four formats are introduced h
 We will explain how SpMV code differ using different formats.
 
 **CSR:** the code shown down in *Listing 1*, is the CSR variant of SpMV.
-The Sp-CSR code iterates over rows and computes each row of *result* one by one by order. We have access to all elements of
-each row by order. So, For each iteration *i* we can compute *result[i,0]*.
+The SpMV CSR code iterates over rows and computes each row of the *result*
+vector one by one in order. Since all elements of a row are stored
+contiguously, each iteration *i* of SpMV CSR computes *result[i,0]*.
 ```
   for (int i=0; i<row; i++)
     {
@@ -122,11 +123,12 @@ each row by order. So, For each iteration *i* we can compute *result[i,0]*.
 <div align="center"> Listing 1: CSR variant of SpMV </div>
 
 **CSC:** The code shown in *Listing 2* is the CSC variant of SpMV.
-The SpMV-CSC code iterates over columns and computes the partial multiplication
+The SpMV CSC code iterates over columns and computes the partial multiplication
 of each element in *result*.
-The computed solution in *result* is final when all iterations are finished.
+For this sequential implementation, the computed solution in *result* is
+final when all iterations are finished.
 This is the opposite of the SpMV CSR code where each iteration *i* computes
-the final element *result[i,0]*.
+*result[i,0]*.
 
 ```
  for (int i=0; i<col; i++ ) 
@@ -142,9 +144,10 @@ the final element *result[i,0]*.
 
 **Diagonal:** for diagonal storage format two implementations are introduced.
 The code in *Listing 3* shows the implementation of SpMV for the first diagonal
-format. As shown, the code iterates over each diagonal that is stored in *d* and computes the
-partial result of each element in *result*. To compute what element in *result* should be
-update, the diagonal information *offset* is used.
+format. As shown, the code iterates over each diagonal that is stored
+in *d* and computes the partial result of each element in *result*.
+To compute what element in *result* should be updated, the diagonal
+information in *offset* are used.
 
 ```
    for (int l = 0; l < d->rowNo; l++) {
@@ -172,11 +175,16 @@ update, the diagonal information *offset* is used.
 <div align="center"> Listing 3: the diagonal1 variant of SpMV </div>
 
 For the second diagonal format, the code for SpMV is shown in *Listing 4*.
-As shown the code computes one element of *result* in each iteration. Since we stored non-zero elements row by row in *d*, *d[i,*]*
-contains the elements of row *i* . But to find column number we need to check whether *i* is bigger or smaller than 
-number of diagonals (d1) . We have different approach to find number column and compute *result[i,0]* for each condition.
+As shown the code computes one element of *result* in each iteration
+because, we stored non-zero elements row by row in *d*, i.e. *d[i,*]*
+contains the elements of row *i* . But to find column number we need
+to check whether *i* is bigger or smaller than
+number of diagonals (d1). Depending on whether the nonzero element is
+on the main diagonal, sub-diagonal, or up-diagonal, three different
+column index calculation is used as shown in *Listing 4*.
 
-*Note:* d1 = dNum/2 because in this case, we just considered main and sub-diagonals.
+*Note:* d1 = dNum/2 because in this case, we just considered main
+and sub-diagonals.
 
 ```
   int d1 = dNum/2; // dNum stores the number of diagonals
@@ -205,15 +213,16 @@ number of diagonals (d1) . We have different approach to find number column and 
 
 #### 2-2- Sparse Triangular Solve:For Different Formats
 We have the equation *Ly = d* in which *L* is lower triangular matrix that is
-stored in CSC, CSC or Diagonal format, *y* is the unknown
-vector and *d* is the known right hand side.
+stored in CSC, CSC or a diagonal format, *y* is the unknown
+vector and *d* is the known right hand side vector.
 In the following we explain how we solve this equation
-in different format of *L*.
+in different sparse storage formats for *L*.
 
-**CSR:** *L* is a sparse matrix in CSR storage format. In this format, shown in *Listing 5*,
-we compute all unknowns by order.
-It means we first compute *y[0,0]* then we use that to compute *y[1,0]* and so on
-and we continue until we find the last unknown. each iteration of *i* computes *y[i,0]*.
+**CSR:** *L* is a sparse matrix in CSR storage format. In this format,
+shown in *Listing 5*, we compute all unknowns in order.
+It means we first compute *y[0,0]* then we use that to compute *y[1,0]*
+and we continue until we find the last unknown *y[rowNo-1,0]*.
+Each iteration of *i* computes *y[i,0]*.
 
 ```
    y->array[0][0] = d->array[0][0] / L->val[0];
@@ -230,10 +239,12 @@ and we continue until we find the last unknown. each iteration of *i* computes *
  ```
 <div align="center"> Listing 5: solving equation in CSR format </div>
 
-**CSC:** In CSC format, shown in *Listing 6*, we access elements of *L* column by column. First we copy *d* into *y*.
-In order to find *y[i,0]* we should have access to all elements of row *i*, so we should process all columns to find that.
-Therefore, we can not compute each *y[i,0]* until we finish all iteration entirely. It means we can compute
-none of elements of *y*, until we iterate for loop for all *i*s.
+**CSC:** In CSC format, shown in *Listing 6*, we access elements of *L*
+column by column. For simplicity, we first copy the right-hand-side *d* into *y*.
+In order to find *y[i,0]*, all elements of row *i* should be accessed,
+so we should process all columns that has a nonzero eleent in row *i*.
+In this sequential implementation, the final solution *y* is achieved after
+all iterations are done.
 
 ```
 
@@ -248,55 +259,22 @@ none of elements of *y*, until we iterate for loop for all *i*s.
  ```
 <div align="center"> Listing 6: solving equation in CSC format </div>
 
-**diagonal1:** To solve a system of linear equation when the sparse matrix is stored in diagonal format, we have following
-code shown in *Listing 8*. In this format first we copy *d* into *y* vector. Then we need to find row index.
-the following code shows how we find and stores row indexes.
+**diagonal1:** The first diagonal format is very inefficient for SpTRSV
+because the code should iterate over columns or rows and thus row or col
+indices should be computed separately at the beginning from the diagonal
+elements. Therefore, it is excluded when comparing with other variants
+of SpTRSV.
 
-```
-for(int i=0; i<n; i++)
-    {
-        k=i;
-        for(int j=0; j< rowNo-l; j++)
-        {
-                r->array[i][j] = k;
-                k++;
-        }
-        l++;
-    }
-```
-<div align="center"> Listing 7: computing row index </div>
-
-By having row index we can multiply each element of *L* with corresponding *y* for each row to compute the result(unknowns).
-
-
-```   
-    y->array[0][0] = d->array[0][0] / L->array[0][0];
-    for(int i=1; i<rowNo; i++)
-    {
-        l=1;
-        for(int j=1; j< n; j++)
-        {
-            for(int k=0; k<rowNo-l; k++)
-            {
-                if (r->array[j][k] == i)
-                {
-                    s += L->array[j][k] * y->array[k][0];
-
-                }
-            }
-        l++;
-        }
-        y->array[i][0] = (d->array[i][0] - s) / L->array[0][i];
-        s = 0;
-    }
- ```
-<div align="center"> Listing 8: solving equation in diagonal1 format </div>
-
-**Diagonal2:** second format that is suggested for storing the matrix in diagonal format, shown in *Listing 9*, is different.
-In this format, because we stored non-zero elements of banded matrix row by row, we use an implementation like CSR format.
-this implementation is more efficient than diagonal1. Because special locality for finding unknowns is better than diagonal1.
-This is because for each iteration *row i* we can compute *y[i,0]*. Of course, Before the execution of inner for, we check whether
-*d1* is bigger or smaller than *i*, because we have two different implementations to compute column number and  *y[i,0]* 
+**Diagonal2:** second format that is suggested for storing the matrix in
+diagonal format, shown in *Listing 9*, is different.
+In this format, because we stored non-zero elements of banded matrix
+row by row, we use an implementation like CSR format.
+this implementation is more efficient than diagonal1.
+Because spatial locality in accessing nonzero elements is better than diagonal1.
+This is because for each iteration *row i* we can compute *y[i,0]*.
+Of course, Before the execution of inner for, we check whether
+*d1* is bigger or smaller than *i*, because we have two different
+implementations to compute column number and  *y[i,0]*
 in each condition.
 
 ```
@@ -313,14 +291,12 @@ in each condition.
           y->array[i][0] = (d->array[i][0] - s) / L->array[i][i];
 
         }
-
          if(i>d1)
         {
             for (int j = i-1; j > j-d1; j--)
             {
                 d1--;
-                s += L->array[i][d1]*y->array[j][0];
-                //d1--;
+                s += L->array[i][d1]*y->array[j][0];                
             }
           d1=dia/2;
           y->array[i][0] = (d->array[i][0] - s) / L->array[i][d1];
@@ -329,3 +305,61 @@ in each condition.
     }
  ```
 <div align="center"> Listing 9: solving equation in diagonal2 format </div>
+
+### 3- Experimental Results
+In this section, we evaluate the two kernels SpMV and SpTRSV for four
+different sparse storage formats.
+We select a set of sparse matrices from Suitesparse matrix repository
+as shown in *Table 1* to compare the performance of CSC and CSR variants
+of SpMV and SpTRSV.
+To compare the efficiency of diagonal formats with CSC and CSR, we generated
+random banded matrices with dimentions of 100-50000 with 5 nonzero diagonals.
+
+ID | Name | Row Number | Column Number | Non-Zero Number
+  :--- | --- | :---: | :---: | :---: 
+ 1 |cbuckle |13681 |13681 |676515
+ 2 |Dubcova2 |65025|65025 |1030225 
+ 3 |Dubcova3 |146689 |146689 |3636643
+ 4 |ecology2 |999999 |999999 |4995991
+ 5 |gyro |17361 |17361 |1021159
+ 6 |gyro_k |17361 |17361 |1021159
+ 7 |LFAT5.mtx |14 |14 |46
+ 8 |msc23052 |23052 |23052 |1142686
+ 9 |olafu |16146 |16146|1015156
+ 10 |parabolic_fem |525825 |525825 |3674625
+ 11 |Pres_Poisson |14822|14822 |715804
+ 12 |raefsky4 |19779 |19779 |1316789
+ 13 |thermomech_dM|204316 |204316|1423116
+ 14 |tmt_sym |726713|726713 |5080961
+
+<div align="center"> Table 1: List of matrices </div>
+
+
+#### 3-1- SpMV Performance
+Figure 1 shows the performance of SpMV for both CSC and CSR storage formats.
+As shown, because the CSR variant has less write operations than the
+CSC variant, it consistently shows a better performance. The CSR variant
+is on average XX times faster than the CSC variant.<br>
+
+![graph1](https://github.com/leila68/Axb/blob/master/doc/mtx.png "graph1")
+
+<div align="center"> Table 1: List of matrices </div>
+
+Figure XX shows the performance of the diagonal variants of SpMV compared with
+CSC and CSR variants for the randomly generated banded matrices.
+As shown, the diagonal2 variant has the best performance because of
+its spatial locality and due to its compact storage format.
+
+
+#### 3-2- SpTRSV performance
+Figure XX shows the performance of SpTRSV for both CSC and CSR. As shown,
+the performance of SpTRSV follow a similar trend to SpMV where the
+CSR variant outperforms the CSC one in most matrices.
+
+
+Figure XX compares the performance of the diagonal2 variant comparing to
+the CSC and CSR code for diagonal matrices. Diagonal 1 is excluded due
+to its inefficiency for SpTRSV. While CSR and diagonal2 show a competitive
+performance, diagonal2 is on average XX times better than the CSR
+variant due to its smaller number of memory accesses (because of its
+compact storage format). 

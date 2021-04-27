@@ -336,14 +336,14 @@ ID | Name | Row Number | Column Number | Non-Zero Number
 
 
 #### 3-1- SpMV Performance
-Figure 1 shows the performance of SpMV for both CSC and CSR storage formats.
+Figure 2 shows the performance of SpMV for both CSC and CSR storage formats.
 As shown, because the CSR variant has less write operations than the
 CSC variant, it consistently shows a better performance. The CSR variant
-is on average XX times faster than the CSC variant.<br>
+is on average 1.16 times faster than the CSC variant.<br>
 
-![graph1](https://github.com/leila68/Axb/blob/master/doc/mtx.png "graph1")
+![graph1](https://github.com/leila68/Axb/blob/master/doc/graph1.png "graph1")
 
-<div align="center"> Table 1: List of matrices </div>
+<div align="center"> Figure 2: The performance of triangular solve using CSR and CSC formats  </div>
 
 Figure XX shows the performance of the diagonal variants of SpMV compared with
 CSC and CSR variants for the randomly generated banded matrices.

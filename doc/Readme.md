@@ -313,7 +313,7 @@ We select a set of sparse matrices from Suitesparse matrix repository
 as shown in *Table 1* to compare the performance of CSC and CSR variants
 of SpMV and SpTRSV.
 To compare the efficiency of diagonal formats with CSC and CSR, we generated
-random banded matrices with dimentions of 100-50000 with 5 nonzero diagonals.
+random banded matrices with dimensions of 100-50000 with 5 nonzero diagonals.
 
 ID | Name | Row Number | Column Number | Non-Zero Number
   :--- | --- | :---: | :---: | :---: 
@@ -341,25 +341,31 @@ As shown, because the CSR variant has less write operations than the
 CSC variant, it consistently shows a better performance. The CSR variant
 is on average 1.16 times faster than the CSC variant.<br>
 
-![graph1](https://github.com/leila68/Axb/blob/master/doc/graph1.png "graph1")
 
-<div align="center"> Figure 2: The performance of triangular solve using CSR and CSC formats  </div>
-
-Figure XX shows the performance of the diagonal variants of SpMV compared with
+<br>
+Figure 3 shows the performance of the diagonal variants of SpMV compared with
 CSC and CSR variants for the randomly generated banded matrices.
 As shown, the diagonal2 variant has the best performance because of
 its spatial locality and due to its compact storage format.
 
 
 #### 3-2- SpTRSV performance
-Figure XX shows the performance of SpTRSV for both CSC and CSR. As shown,
+Figure 4 shows the performance of SpTRSV for both CSC and CSR. As shown,
 the performance of SpTRSV follow a similar trend to SpMV where the
-CSR variant outperforms the CSC one in most matrices.
+CSR variant outperforms the CSC one in most matrices.<br>
 
+![graph1](https://github.com/leila68/Axb/blob/master/doc/graph1.png "graph1")
 
-Figure XX compares the performance of the diagonal2 variant comparing to
+<div align="left"> Figure 4: The performance of triangular solve using CSR and CSC formats  </div>
+<br>
+Figure 5 compares the performance of the diagonal2 variant comparing to
 the CSC and CSR code for diagonal matrices. Diagonal 1 is excluded due
 to its inefficiency for SpTRSV. While CSR and diagonal2 show a competitive
 performance, diagonal2 is on average XX times better than the CSR
 variant due to its smaller number of memory accesses (because of its
-compact storage format). 
+compact storage format). <br>
+
+![graph1](https://github.com/leila68/Axb/blob/master/doc/graph2.png "graph1")
+
+<div align="left"> Figure 5: The performance of triangular solve using CSR and CSC and Diagonal2 formats </div>
+<br>

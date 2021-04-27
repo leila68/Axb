@@ -147,14 +147,12 @@ Matrix* TriangularSolve::solve(Matrix *L, Matrix *d, int dia)
           y->array[i][0] = (d->array[i][0] - s) / L->array[i][i];
 
         }
-
          if(i>d1)
         {
             for (int j = i-1; j > j-d1; j--)
             {
                 d1--;
                 s += L->array[i][d1]*y->array[j][0];
-                //d1--;
             }
           d1=dia/2;
           y->array[i][0] = (d->array[i][0] - s) / L->array[i][d1];

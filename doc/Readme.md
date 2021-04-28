@@ -120,6 +120,7 @@ contiguously, each iteration *i* of SpMV CSR computes *result[i,0]*.
  ``` 
 <div align="center"> Listing 1: CSR variant of SpMV </div>
 <br>
+
 **CSC:** The code shown in *Listing 2* is the CSC variant of SpMV.
 The SpMV CSC code iterates over columns and computes the partial multiplication
 of each element in *result*. For this sequential implementation, the computed 
@@ -139,6 +140,7 @@ code where each iteration *i* computes *result[i,0]*.
  ```        
 <div align="center"> Listing 2: the CSC variant of SpMV </div>
 <br>
+
 **Diagonal:** for diagonal storage format two implementations are introduced.
 The code in *Listing 3* shows the implementation of SpMV for the first diagonal
 format. As shown, the code iterates over each diagonal that is stored
@@ -171,6 +173,7 @@ information in *offset* is used.
  ``` 
 <div align="center"> Listing 3: the diagonal1 variant of SpMV </div>
 <br>
+
 For the second diagonal format, the code for SpMV is shown in *Listing 4*.
 As shown, the code computes one element of *result* in each iteration
 because we stored nonzero elements row by row in *d*, i.e. *d[i,*]*
@@ -234,8 +237,10 @@ Each iteration of *i* computes *y[i,0]*.
         s = 0;
     }
  ```
-<div align="center"> Listing 5: solving *Lx=b* while *L* is stored in CSR format </div>
+<div align="center"> Listing 5: solving <i>Ly=d</i> while <i>L</i> is stored in CSR format </div>
+
 <br>
+
 **CSC:** In CSC format, shown in *Listing 6*, we access elements of *L*
 column by column. For simplicity, we first copy the right-hand-side *d* into *y*.
 In order to find *y[i,0]*, all elements of row *i* should be accessed,
@@ -254,8 +259,11 @@ all iterations are done.
             }
       }
  ```
-<div align="center"> Listing 6: solving *Lx=b* while *L* is stored in CSC format </div>
 <br>
+
+<div align="center"> Listing 6: solving <i>Ly=d</i> while <i>L</i> is stored in CSC format </div>
+
+
 **Diagonal1:** The first diagonal format is very inefficient for SpTRSV
 because the code should iterate over columns or rows and thus row or col
 indices should be computed separately at the beginning from the diagonal
@@ -301,7 +309,7 @@ in each condition.
         s = 0;
     }
  ```
-<div align="center"> Listing 7: solving *Lx=b* while *L* is stored in diagonal2 format </div>
+<div align="center"> Listing 7: solving <i>Ly=d</i> while <i>L</i> is stored in diagonal2 format </div>
 
 ### 3- Experimental Results
 In this section, we evaluate the two kernels SpMV and SpTRSV for four

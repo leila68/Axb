@@ -41,7 +41,7 @@ Axb provides two different demo that each tests sparse matrix-vector multiplicat
   ```
  
   In either demo, Axb generates CSV files. Some example graphs based on a set of 
-  matrices are shown in section 3 of [https://github.com/leila68/Axb/blob/master/Readme.md]().
+  matrices are shown in section 3 of [https://github.com/leila68/Axb/blob/master/doc/Readme.md]().
   
   
  

@@ -55,8 +55,7 @@ implementations are presented. The first one stores non-zero
 elements diagonal by diagonal, and the second one stores them row by row.<br>
 
 **Diagonal 1:** The first diagonal format stores diagonals in
-a two dimensional
-array that each row contains one diagonal. So, the row
+a two-dimensional array that each row contains one diagonal. So, the row
 numbers of this matrix is equal to number of non-zero diagonals of
 the banded matrix. Figure 1 can be considered as a banded matrix and
 its corresponding diagonal format is shown below. *dd* is
@@ -76,16 +75,16 @@ offset:
 
 *Note:* to solve a linear system of the form *Ly = d*, *L* should be a
 lower triangular matrix. So we only store main
-diagonal and sub-diagonals for a lower triangular banded matrix.
+diagonal, and sub-diagonals for a lower triangular banded matrix.
 *i=0* means main diagonal and for main diagonal we know row and column
 is the same.
 For sub-diagonals *row>column*.<br>
 
 **Diagonal 2:** Second format that is suggested for storing a banded matrix,
 processes matrix row by row and stored every
-non-zero elements of banded matrix in *dm*. So, in *dm[0,*]* is
-stored non-zero element of first row of banded matrix.
-*dm[1,*]* contains non-zero elements of second row of banded matrix.
+non-zero elements of banded matrix in *dm*. So, in *dm[0,*]* are
+stored non-zero element of the first row of banded matrix.
+*dm[1,*]* contains non-zero elements of second row of the banded matrix.
 
 dm:
 <br>
@@ -94,7 +93,7 @@ dm:
 ### 2- Kernel Variants
 Sparse kernels provide a different performance depending on
 the sparse storage format they use. In this section, we use
-two sparse kernels, sparse matrix vector multiplication (SpMV)
+two sparse kernels, sparse matrix-vector multiplication (SpMV)
 and sparse lower triangular solver (SpTRSV) and show how
 they should be redesigned for the four different storage formats
 shown in Section 1.
@@ -102,7 +101,7 @@ shown in Section 1.
 #### 2-1- Sparse Matrix – Vector Multiplication (SpMV)
 SpMV kernel computes *y = A\* x* where *A* is a sparse kernel and *x* and *y*
 are dense vectors. *A* can be stored in any of the four formats are introduced here.
-We will explain how SpMV code differ using different formats.
+We will explain how SpMV code differs using different formats.
 
 **CSR:** the code shown down in *Listing 1*, is the CSR variant of SpMV.
 The SpMV CSR code iterates over rows and computes each row of the *result*
@@ -147,7 +146,7 @@ The code in *Listing 3* shows the implementation of SpMV for the first diagonal
 format. As shown, the code iterates over each diagonal that is stored
 in *d* and computes the partial result of each element in *result*.
 To compute what element in *result* should be updated, the diagonal
-information in *offset* are used.
+information in *offset* is used.
 
 ```
    for (int l = 0; l < d->rowNo; l++) {
@@ -176,10 +175,10 @@ information in *offset* are used.
 
 For the second diagonal format, the code for SpMV is shown in *Listing 4*.
 As shown the code computes one element of *result* in each iteration
-because, we stored non-zero elements row by row in *d*, i.e. *d[i,*]*
-contains the elements of row *i* . But to find column number we need
+because we stored non-zero elements row by row in *d*, i.e. *d[i,*]*
+contains the elements of row *i* . But to find the column number we need
 to check whether *i* is bigger or smaller than
-number of diagonals (d1). Depending on whether the nonzero element is
+the number of diagonals (d1). Depending on whether the nonzero element is
 on the main diagonal, sub-diagonal, or up-diagonal, three different
 column index calculation is used as shown in *Listing 4*.
 
@@ -213,9 +212,9 @@ and sub-diagonals.
 
 #### 2-2- Sparse Triangular Solve:For Different Formats
 We have the equation *Ly = d* in which *L* is lower triangular matrix that is
-stored in CSC, CSC or a diagonal format, *y* is the unknown
+stored in CSC, CSC, or a diagonal format, *y* is the unknown
 vector and *d* is the known right hand side vector.
-In the following we explain how we solve this equation
+In the following, we explain how we solve this equation
 in different sparse storage formats for *L*.
 
 **CSR:** *L* is a sparse matrix in CSR storage format. In this format,
@@ -242,7 +241,7 @@ Each iteration of *i* computes *y[i,0]*.
 **CSC:** In CSC format, shown in *Listing 6*, we access elements of *L*
 column by column. For simplicity, we first copy the right-hand-side *d* into *y*.
 In order to find *y[i,0]*, all elements of row *i* should be accessed,
-so we should process all columns that has a nonzero eleent in row *i*.
+so we should process all columns that has a nonzero element in row *i*.
 In this sequential implementation, the final solution *y* is achieved after
 all iterations are done.
 
@@ -309,7 +308,7 @@ in each condition.
 ### 3- Experimental Results
 In this section, we evaluate the two kernels SpMV and SpTRSV for four
 different sparse storage formats.
-We select a set of sparse matrices from Suitesparse matrix repository
+We select a set of sparse matrices from the Suitesparse matrix repository
 as shown in *Table 1* to compare the performance of CSC and CSR variants
 of SpMV and SpTRSV.
 To compare the efficiency of diagonal formats with CSC and CSR, we generated
@@ -337,9 +336,9 @@ ID | Name | Row Number | Column Number | Non-Zero Number
 
 #### 3-1- SpMV Performance
 Figure 2 shows the performance of SpMV for both CSC and CSR storage formats.
-As shown, because the CSR variant has less write operations than the
-CSC variant, it consistently shows a better performance. The CSR variant
-is on average 1.16 times faster than the CSC variant.
+As shown, because the CSR variant has fewer write operations than the
+CSC variant, consistently shows a better performance. The CSR variant
+is on average XXX times faster than the CSC variant.
 <br>
 ![graph1](https://github.com/leila68/Axb/blob/master/doc/graphM2.png "graph1")
 

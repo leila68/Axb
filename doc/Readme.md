@@ -17,6 +17,7 @@ To illustrate different formats, an example sparse matrix shown in Figure1 is us
 <br>
 
 ![sparse matrix](https://github.com/leila68/Axb/blob/master/doc/mtx.png "mtx")
+
 Figure 1: a sparse matrix with 4 rows, 4 columns, and 7 nonzero elements
 
 **1-1- CSR:** Storing nonzero elements of a sparse matrix into a linear array *val* is done by going over each row in

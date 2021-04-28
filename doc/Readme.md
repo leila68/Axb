@@ -313,7 +313,7 @@ We run all experiments on a single core of an Intel Skylake processor.
 To compare the efficiency of diagonal formats with CSC and CSR, we generated
 random banded matrices with dimensions of 100--50000 with 5 nonzero diagonals.
 
-ID | Name | Row Number | Column Number | Non-Zero Number
+ID | Name | Row Number | Column Number | Number of Nonzero Elements
   :--- | --- | :---: | :---: | :---: 
 1 |cbuckle |13681 |13681 |676515
 2 |Dubcova2 |65025|65025 |1030225

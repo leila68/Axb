@@ -77,7 +77,7 @@ Matrix* TriangularSolve::solve(CSC *L, Matrix *d)
     return y;
 }
 
-Matrix* TriangularSolve::solve(Matrix *L, Matrix *d, int *offset, int dia )
+Matrix* TriangularSolve::solved1(Matrix *L, Matrix *d, int dia )
 {
    // int i,j;
     int k;

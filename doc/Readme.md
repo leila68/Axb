@@ -1,7 +1,7 @@
 # Exploring the Effect of Sparse Storage Formats
 
 ---
-Sparse matrix codes show different performance when a different
+Sparse matrix codes show different performances when a different
 storage format is selected. In this report, we explore this using
 four different storage format and for two different sparse
 kernels. This report is based on [Axb]() published in 2018.
@@ -12,8 +12,8 @@ kernels. This report is based on [Axb]() published in 2018.
 There are several compressed formats for storing sparse matrices.
 In all sparse storage formats, the nonzero elements are compressed
 and stored in different arrays. Four different formats are explained in this section.
-compressed sparse row (CSR), compressed sparse column(CSC), and two different diagonal formats. To illustrate different
-formats, an example sparse matrix shown in Figure1 is used.
+compressed sparse row (CSR), compressed sparse column(CSC), and two different diagonal formats. 
+To illustrate different formats, an example sparse matrix shown in Figure1 is used.
 <br>
 
 ![sparse matrix](https://github.com/leila68/Axb/blob/master/doc/mtx.png "mtx")
@@ -21,7 +21,7 @@ formats, an example sparse matrix shown in Figure1 is used.
 Figure 1: a sparse matrix with 4 rows, 4 columns, and 7 non-zero elements
 
 **1-1- CSR:** Storing non-zero elements of a sparse matrix into a linear array *val* is done by going over each row in
-order,and storing the non-zero elements to a linear array in the order they appear in the walk. Location and column
+order, and storing the non-zero elements to a linear array in the order they appear in the walk. Location and column
 indices of non-zero elements of the *val* array in order stored in *row_ptr* and *col_idx*. The first element of row *i*
 is stored *val[row_ptr[i]]* and the column index of the non-zero
 element in *val[i]* is stored in *col_idx[i]*.<br>
@@ -332,22 +332,30 @@ ID | Name | Row Number | Column Number | Non-Zero Number
  13 |thermomech_dM|204316 |204316|1423116
  14 |tmt_sym |726713|726713 |5080961
 
-<div align="center"> Table 1: List of matrices </div>
+<div align="left"> Table 1: List of matrices </div>
 
 
 #### 3-1- SpMV Performance
 Figure 2 shows the performance of SpMV for both CSC and CSR storage formats.
 As shown, because the CSR variant has less write operations than the
 CSC variant, it consistently shows a better performance. The CSR variant
-is on average 1.16 times faster than the CSC variant.<br>
-
-
+is on average 1.16 times faster than the CSC variant.
 <br>
+![graph1](https://github.com/leila68/Axb/blob/master/doc/graphM2.png "graph1")
+
+<div align="left"> Figure 2: The performance CSR, CSC variants of SpMV  </div>
+<br>
+
 Figure 3 shows the performance of the diagonal variants of SpMV compared with
 CSC and CSR variants for the randomly generated banded matrices.
 As shown, the diagonal2 variant has the best performance because of
 its spatial locality and due to its compact storage format.
+<br>
 
+![graph1](https://github.com/leila68/Axb/blob/master/doc/graphM1.png "graph1")
+
+<div align="left"> Figure 3: The performance CSR, CSC, diagonal1 and diagonal2 variants of SpMV  </div>
+<br>
 
 #### 3-2- SpTRSV performance
 Figure 4 shows the performance of SpTRSV for both CSC and CSR. As shown,
@@ -364,6 +372,7 @@ to its inefficiency for SpTRSV. While CSR and diagonal2 show a competitive
 performance, diagonal2 is on average XX times better than the CSR
 variant due to its smaller number of memory accesses (because of its
 compact storage format). <br>
+
 
 ![graph1](https://github.com/leila68/Axb/blob/master/doc/graph2.png "graph1")
 

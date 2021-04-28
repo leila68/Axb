@@ -20,7 +20,7 @@ public:
     Matrix* solve(Matrix *L, Matrix *d);
     Matrix* solve(CSR *L, Matrix *d);
     Matrix* solve(CSC *L, Matrix *d);
-    Matrix* solve(Matrix *L, Matrix *d, int *offset, int dia);
+    Matrix* solved1(Matrix *L, Matrix *d, int dia);
     Matrix* solve(Matrix *L, Matrix *d, int dia);
 
     ~TriangularSolve();

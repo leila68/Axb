@@ -35,8 +35,8 @@ void evaluatingFormatsMatrices(string f1)
         {
             break;
         }
-        RunAll1(name);
-       // RunAll2(name);
+       // RunAll1(name);
+        RunAll2(name);
     }
     f.close();
 }
@@ -510,7 +510,7 @@ void diagonalSolveTest(int dim, int dl)
     int *f = d1->offsetCompute(1);//1 for Lower Triangular Matrix
     TriangularSolve *d = new TriangularSolve(dim);//number of rows
 
-    Matrix *result = d->solve(d2,v1,f,dl);
+    Matrix *result = d->solved1(d2,v1,dl);
     result->print();
     Matrix *ts = d1->diaMult(d2,result);
     bool a = ts->isequal(v1);
@@ -720,7 +720,7 @@ void generalSolveTest(int dim, int dl)
 
     // TriangularSolve *d = new TriangularSolve(100);//n:row number
     start = std::chrono::system_clock::now();
-    Matrix *result3 = s->solve(d2,v1,f,dl);
+    Matrix *result3 = s->solved1(d2,v1,dl);
     end = std::chrono::system_clock::now();
     elapsed_seconds = end - start;
     double durationSym3 = elapsed_seconds.count();
@@ -916,6 +916,7 @@ void generalMultTest1(int dim, int dl)
 }
 
 void generalSolveTest1(int dim, int dl)
+
 {
 // 7 for col and row - 4 for diagonal
     vector<double> t1;
@@ -1001,7 +1002,7 @@ void generalSolveTest1(int dim, int dl)
     for(int i=0; i<5; i++)
     {
         start = std::chrono::system_clock::now();
-        Matrix *result3 = s->solve(d2,v1,f,dl);
+        Matrix *result3 = s->solved1(d2,v1,dl);
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym3 = elapsed_seconds.count();

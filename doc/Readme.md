@@ -140,8 +140,7 @@ code where each iteration *i* computes *result[i,0]*.
 <div align="center"> Listing 2: the CSC variant of SpMV </div>
 <br>
 
-**Diagonal:** for diagonal storage format two implementations are introduced.
-The code in *Listing 3* shows the implementation of SpMV for the first diagonal
+**Diagonal1:** The code in *Listing 3* shows the implementation of SpMV for the first diagonal
 format. As shown, the code iterates over each diagonal that is stored
 in *d* and computes the partial result of each element in *result*.
 To compute what element in *result* should be updated, the diagonal
@@ -173,7 +172,7 @@ information in *offset* is used.
 <div align="center"> Listing 3: the diagonal1 variant of SpMV </div>
 <br>
 
-For the second diagonal format, the code for SpMV is shown in *Listing 4*.
+**Diagonal2:** For the second diagonal format, the code for SpMV is shown in *Listing 4*.
 As shown, the code computes one element of *result* in each iteration
 because we stored nonzero elements row by row in *d*, i.e. *d[i,\*]*
 contains the elements of row *i* . But to find the column number we need

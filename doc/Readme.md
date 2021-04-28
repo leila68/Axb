@@ -17,12 +17,11 @@ To illustrate different formats, an example sparse matrix shown in Figure1 is us
 <br>
 
 ![sparse matrix](https://github.com/leila68/Axb/blob/master/doc/mtx.png "mtx")
+Figure 1: a sparse matrix with 4 rows, 4 columns, and 7 nonzero elements
 
-Figure 1: a sparse matrix with 4 rows, 4 columns, and 7 non-zero elements
-
-**1-1- CSR:** Storing non-zero elements of a sparse matrix into a linear array *val* is done by going over each row in
-order, and storing the non-zero elements to a linear array in the order they appear in the walk. Location and column
-indices of non-zero elements of the *val* array in order stored in *row_ptr* and *col_idx*. The first element of row *i*
+**1-1- CSR:** Storing nonzero elements of a sparse matrix into a linear array *val* is done by going over each row in
+order, and storing the nonzero elements to a linear array in the order they appear in the walk. Location and column
+indices of nonzero elements of the *val* array in order stored in *row_ptr* and *col_idx*. The first element of row *i*
 is stored *val[row_ptr[i]]* and the column index of the non-zero
 element in *val[i]* is stored in *col_idx[i]*.<br>
 val:[1,3,5,4,6,2,7]<br>
@@ -30,36 +29,35 @@ row_ptr:[0,1,3,5,7]<br>
 col_idx:[0,0,1,1,2,2,3]<br>
 
 The CSR storage of the sparse matrix in Figure 1 is shown above.
-As shown, the non-zero element 5 in row 1 and column 1 is stored
-in *val[row_ptr[1]+1]* and its
-column index is stored in *col_idx[row_ptr[1]+1]* where one is
+As shown, the nonzero element 5 in row 1 and column 1 is stored
+in *val[row_ptr[1]+1]* and its column index is stored in *col_idx[row_ptr[1]+1]* where one is
 the offset of the element from the first element in row one.
 
-**1-2- CSC:** Storing the non-zero elements of a sparse matrix into a linear array is done by going over each column in order,
-and writing the non-zero elements to a linear array in the order they appear in the walk. Location and row indices of
-non-zero elements of the *val* array are in order stored in *col_ptr* and *row_idx*. The first element of column *i* is stored
-in val[col_ptr[i]] and the row index of the non-zero elements in *val[j]* is stored in *row_idx[j]*.
+**1-2- CSC:** Storing the nonzero elements of a sparse matrix into a linear array is done by going over each column in order,
+and writing the nonzero elements to a linear array in the order they appear in the walk. Location and row indices of
+nonzero elements of the *val* array are in order stored in *col_ptr* and *row_idx*. The first element of column *j* is stored
+in val[col_ptr[j]] and the row index of the nonzero elements in *val[j]* is stored in *row_idx[j]*.
 
 val:[1,3,5,4,6,2,7]<br>
 col_ptr:[0,2,4,6,7]<br>
 row_idx:[0,1,1,2,2,3,3]<br>
 
 The CSC storage of the sparse matrix in Figure 1 is shown above.
-As shown, the non-zero element 5 in column 1 and row 1 is stored in *val[col_ptr[1]+0]* and its row
+As shown, the nonzero element 5 in column 1 and row 1 is stored in *val[col_ptr[1]+0]* and its row
 index is stored in *row_idx[col_ptr[1]]+0]* where zero is the offset of the element from the first column.<br>
 
-**1-3- Diagonal Formats:** Since in a banded matrix, non-zero elements are
+**1-3- Diagonal Formats:** Since in a banded matrix, nonzero elements are
 limited to diagonal bands, we only need to store
 elements based on their diagonals. For this storage format, two
-implementations are presented. The first one stores non-zero
+implementations are presented. The first one stores nonzero
 elements diagonal by diagonal, and the second one stores them row by row.<br>
 
 **Diagonal 1:** The first diagonal format stores diagonals in
 a two-dimensional array that each row contains one diagonal. So, the row
-numbers of this matrix is equal to number of non-zero diagonals of
+numbers of this matrix is equal to number of nonzero diagonals of
 the banded matrix. Figure 1 can be considered as a banded matrix and
 its corresponding diagonal format is shown below. *dd* is
-the array that stores diagonals. we store non-zero elements (diagonals)
+the array that stores diagonals. we store nonzero elements (diagonals)
 in *dd*. Size of *Offset* shows the number of
 diagonals. *offset[i]=0* is the main diagonal.
 *offsset[i]<0* is up-diagonal, and *offset[i]>0* is sub-diagonal.<br>
@@ -74,17 +72,12 @@ offset:
 <br>
 
 *Note:* to solve a linear system of the form *Ly = d*, *L* should be a
-lower triangular matrix. So we only store main
-diagonal, and sub-diagonals for a lower triangular banded matrix.
-*i=0* means main diagonal and for main diagonal we know row and column
-is the same.
-For sub-diagonals *row>column*.<br>
+lower triangular matrix. So we only store main diagonal, and sub-diagonals for a lower triangular banded matrix.
+*i=0* means main diagonal and for main diagonal we know row and column is the same, and for sub-diagonals *row>column*.<br>
 
 **Diagonal 2:** Second format that is suggested for storing a banded matrix,
-processes matrix row by row and stored every
-non-zero elements of banded matrix in *dm*. So, in *dm[0,*]* are
-stored non-zero element of the first row of banded matrix.
-*dm[1,*]* contains non-zero elements of second row of the banded matrix.
+processes matrix row by row and stored every nonzero elements of banded matrix in *dm*. 
+So, nonzero elements of the first row are stored in *dm[0,*]*, and *dm[1,*]* contains nonzero elements of second row.
 
 dm:
 <br>
@@ -114,19 +107,16 @@ contiguously, each iteration *i* of SpMV CSR computes *result[i,0]*.
         {
             s = val[j] * v->array[idx[j]][0] + s;
         }
-
        result->array[i][0] = s;
         s = 0;
     }
  ``` 
 <div align="center"> Listing 1: CSR variant of SpMV </div>
-
+<br>
 **CSC:** The code shown in *Listing 2* is the CSC variant of SpMV.
 The SpMV CSC code iterates over columns and computes the partial multiplication
-of each element in *result*.
-For this sequential implementation, the computed solution in *result* is
-final when all iterations are finished.
-This is the opposite of the SpMV CSR code where each iteration *i* computes
+of each element in *result*. For this sequential implementation, the computed solution in *result* is
+final when all iterations are finished. This is the opposite of the SpMV CSR code where each iteration *i* computes
 *result[i,0]*.
 
 ```
@@ -140,7 +130,7 @@ This is the opposite of the SpMV CSR code where each iteration *i* computes
   } 
  ```        
 <div align="center"> Listing 2: the CSC variant of SpMV </div>
-
+<br>
 **Diagonal:** for diagonal storage format two implementations are introduced.
 The code in *Listing 3* shows the implementation of SpMV for the first diagonal
 format. As shown, the code iterates over each diagonal that is stored
@@ -172,10 +162,10 @@ information in *offset* is used.
      }
  ``` 
 <div align="center"> Listing 3: the diagonal1 variant of SpMV </div>
-
+<br>
 For the second diagonal format, the code for SpMV is shown in *Listing 4*.
-As shown the code computes one element of *result* in each iteration
-because we stored non-zero elements row by row in *d*, i.e. *d[i,*]*
+As shown, the code computes one element of *result* in each iteration
+because we stored nonzero elements row by row in *d*, i.e. *d[i,*]*
 contains the elements of row *i* . But to find the column number we need
 to check whether *i* is bigger or smaller than
 the number of diagonals (d1). Depending on whether the nonzero element is
@@ -237,11 +227,11 @@ Each iteration of *i* computes *y[i,0]*.
     }
  ```
 <div align="center"> Listing 5: solving equation in CSR format </div>
-
+<br>
 **CSC:** In CSC format, shown in *Listing 6*, we access elements of *L*
 column by column. For simplicity, we first copy the right-hand-side *d* into *y*.
 In order to find *y[i,0]*, all elements of row *i* should be accessed,
-so we should process all columns that has a nonzero element in row *i*.
+so we should process all columns that have a nonzero element in row *i*.
 In this sequential implementation, the final solution *y* is achieved after
 all iterations are done.
 
@@ -257,16 +247,16 @@ all iterations are done.
       }
  ```
 <div align="center"> Listing 6: solving equation in CSC format </div>
-
-**diagonal1:** The first diagonal format is very inefficient for SpTRSV
+<br>
+**Diagonal1:** The first diagonal format is very inefficient for SpTRSV
 because the code should iterate over columns or rows and thus row or col
 indices should be computed separately at the beginning from the diagonal
 elements. Therefore, it is excluded when comparing with other variants
 of SpTRSV.
 
 **Diagonal2:** second format that is suggested for storing the matrix in
-diagonal format, shown in *Listing 9*, is different.
-In this format, because we stored non-zero elements of banded matrix
+diagonal format, shown in *Listing 7*, is different.
+In this format, because we stored nonzero elements of banded matrix
 row by row, we use an implementation like CSR format.
 this implementation is more efficient than diagonal1.
 Because spatial locality in accessing nonzero elements is better than diagonal1.
@@ -303,7 +293,7 @@ in each condition.
         s = 0;
     }
  ```
-<div align="center"> Listing 9: solving equation in diagonal2 format </div>
+<div align="center"> Listing 7: solving equation in diagonal2 format </div>
 
 ### 3- Experimental Results
 In this section, we evaluate the two kernels SpMV and SpTRSV for four

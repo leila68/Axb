@@ -38,7 +38,7 @@ An example input file containing matrix file paths is shown
 
 To test different formats on a banded matrix, you should provide two
 integer values, the matrix dimension `dim` and the number of bands
-`d`. The following command shows Axb evaluates banded matrices:
+`dl`. The following command shows Axb evaluates banded matrices:
   ```
   Axb dim dl > out2.csv
   ```

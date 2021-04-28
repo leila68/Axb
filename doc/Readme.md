@@ -338,7 +338,7 @@ ID | Name | Row Number | Column Number | Non-Zero Number
 Figure 2 shows the performance of SpMV for both CSC and CSR storage formats.
 As shown, because the CSR variant has fewer write operations than the
 CSC variant, consistently shows a better performance. The CSR variant
-is on average XXX times faster than the CSC variant.
+is on average 1.08 times faster than the CSC variant.
 <br>
 ![graph1](https://github.com/leila68/Axb/blob/master/doc/graphM2.png "graph1")
 
@@ -368,7 +368,7 @@ CSR variant outperforms the CSC one in most matrices.<br>
 Figure 5 compares the performance of the diagonal2 variant comparing to
 the CSC and CSR code for diagonal matrices. Diagonal 1 is excluded due
 to its inefficiency for SpTRSV. While CSR and diagonal2 show a competitive
-performance, diagonal2 is on average XX times better than the CSR
+performance, diagonal2 is on average 1.2 times better than the CSR
 variant due to its smaller number of memory accesses (because of its
 compact storage format). <br>
 

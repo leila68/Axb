@@ -24,8 +24,7 @@ Figure 1: a sparse matrix with 4 rows, 4 columns, and 7 nonzero elements
 **1-1- CSR:** Storing nonzero elements of a sparse matrix into a linear array *val* is done by going over each row in
 order, and storing the nonzero elements to a linear array in the order they appear in the walk. Location and column
 indices of nonzero elements of the *val* array in order stored in *row_ptr* and *col_idx*. The first element of row *i*
-is stored *val[row_ptr[i]]* and the column index of the non-zero
-element in *val[i]* is stored in *col_idx[i]*.<br>
+is stored in *val[row_ptr[i]]* and the column index of the non-zero element in *val[i]* is stored in *col_idx[i]*.<br>
 val:[1,3,5,4,6,2,7]<br>
 row_ptr:[0,1,3,5,7]<br>
 col_idx:[0,0,1,1,2,2,3]<br>
@@ -54,6 +53,10 @@ elements based on their diagonals. For this storage format, two
 implementations are presented. The first one stores nonzero
 elements diagonal by diagonal, and the second one stores them row by row.<br>
 
+*Note:* to solve a linear system of the form *Ly = d*, *L* should be a
+lower triangular matrix. So we only store main diagonal, and sub-diagonals
+for a lower triangular banded matrix.
+
 **Diagonal 1:** The first diagonal format stores diagonals in
 a two-dimensional array that each row contains one diagonal. So, the row
 numbers of this matrix is equal to number of nonzero diagonals of
@@ -73,16 +76,13 @@ offset:
 ![sparse matrix](https://github.com/leila68/Axb/blob/master/doc/offset.png "mtx")
 <br>
 
-*Note:* to solve a linear system of the form *Ly = d*, *L* should be a
-lower triangular matrix. So we only store main diagonal, and sub-diagonals
-for a lower triangular banded matrix.
+
 *i=0* means main diagonal and for the main diagonal we know row and column
 is the same, and for sub-diagonals *row>column*.<br>
 
 **Diagonal 2:** Second format that is suggested for storing a banded matrix,
-processes matrix row by row and stored every nonzero elements of banded
-matrix in *dm*.
-So, nonzero elements of the first row are stored in *dm[0,*]*, and *dm[1,*]*
+processes matrix row by row and stores every nonzero elements of banded
+matrix in *dm*. So, nonzero elements of the first row are stored in *dm[0,\*]*, and *dm[1,\*]*
 contains nonzero elements of second row.
 
 dm:
@@ -100,8 +100,7 @@ shown in Section 1.
 #### 2-1- Sparse Matrix – Vector Multiplication (SpMV)
 SpMV kernel computes *y = A\* x* where *A* is a sparse kernel and *x* and *y*
 are dense vectors. *A* can be stored in any of the four formats are introduced
-here.
-We will explain how SpMV code differs using different formats.
+here. We will explain how different sparse storage format leads to different SpMv code variant.
 
 **CSR:** the code shown down in *Listing 1*, is the CSR variant of SpMV.
 The SpMV CSR code iterates over rows and computes each row of the *result*
@@ -176,7 +175,7 @@ information in *offset* is used.
 
 For the second diagonal format, the code for SpMV is shown in *Listing 4*.
 As shown, the code computes one element of *result* in each iteration
-because we stored nonzero elements row by row in *d*, i.e. *d[i,*]*
+because we stored nonzero elements row by row in *d*, i.e. *d[i,\*]*
 contains the elements of row *i* . But to find the column number we need
 to check whether *i* is bigger or smaller than
 the number of diagonals (d1). Depending on whether the nonzero element is
@@ -263,15 +262,15 @@ all iterations are done.
 
 <div align="center"> Listing 6: solving <i>Ly=d</i> while <i>L</i> is stored in CSC format </div>
 
+<br>
 
 **Diagonal1:** The first diagonal format is very inefficient for SpTRSV
-because the code should iterate over columns or rows and thus row or col
+because the code should iterate over columns or rows and thus row or column
 indices should be computed separately at the beginning from the diagonal
 elements. Therefore, it is excluded when comparing with other variants
 of SpTRSV.
 
-**Diagonal2:** The second diagonal variant that is suggested for solving  
-the sparse lower triangular system is shown in *Listing 7.
+**Diagonal2:** The second diagonal variant that is suggested for solving the sparse lower triangular system is shown in *Listing 7*.
 In this format, because we stored nonzero elements of the banded matrix
 row by row, we use an implementation similar to CSR format.
 This implementation is more efficient than diagonal1 because, spatial locality
@@ -319,7 +318,7 @@ as shown in *Table 1* to compare the performance of CSC and CSR variants
 of SpMV and SpTRSV.
 We run all experiments on a single core of an Intel Skylake processor.
 To compare the efficiency of diagonal formats with CSC and CSR, we generated
-random banded matrices with dimensions of 100--50000 with 5 nonzero diagonals.
+random banded matrices with dimensions of 5000-40000 with 5 nonzero diagonals.
 
 ID | Name | Row Number | Column Number | Number of Nonzero Elements
   :--- | --- | :---: | :---: | :---: 

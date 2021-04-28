@@ -1,7 +1,7 @@
 
 ## Axb: Sparsity-Aware Storage Format Selection
 
-This repository provides a prototype for the [Axb_paper](https://github.com/leila68/Axb/blob/master/Axb_paper.pdf) and explores the effect of 
+This repository provides a prototype for the [Axb paper](https://github.com/leila68/Axb/blob/master/Axb_paper.pdf) and explores the effect of 
 sparse storage formats on different sparse kernels. 
 
 ### Prerequisites:
@@ -31,7 +31,7 @@ Axb provides two different demo that each tests sparse matrix-vector multiplicat
   ```
   Axb list_file_path.txt > out1.csv
   ```
-  An example input file containing matrix file paths is in [list_file_path](https://github.com/leila68/Axb/blob/master/doc/list_file_path). 
+  An example input file containing matrix file paths is in here [list_file_path](https://github.com/leila68/Axb/blob/master/doc/list_file_path). 
   
   To test different formats on a banded matrix, you should provide two 
   integer values, the matrix dimension `dim` and the number of bands 
@@ -41,7 +41,7 @@ Axb provides two different demo that each tests sparse matrix-vector multiplicat
   ```
  
   In either demo, Axb generates CSV files. Some example graphs based on a set of 
-  matrices are shown in section 3 of [Readme.md](https://github.com/leila68/Axb/blob/master/doc/Readme.md).
+  matrices are shown in section 3 of this file [Readme.md](https://github.com/leila68/Axb/blob/master/doc/Readme.md).
   
   
  

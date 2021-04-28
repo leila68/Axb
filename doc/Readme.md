@@ -4,7 +4,8 @@
 Sparse matrix codes show different performances when a different
 storage format is selected. In this report, we explore this using
 four different storage format and for two different sparse
-kernels. This report is based on [Axb]() published in 2018.
+kernels. This report is based on [Axb](https://github.com/leila68/Axb/blob/master/Axb_paper.pdf)
+published in 2018.
 
 
 ### 1- Sparse Storage Formats
@@ -12,7 +13,7 @@ kernels. This report is based on [Axb]() published in 2018.
 There are several compressed formats for storing sparse matrices.
 In all sparse storage formats, the nonzero elements are compressed
 and stored in different arrays. Four different formats are explained in this section.
-compressed sparse row (CSR), compressed sparse column(CSC), and two different diagonal formats. 
+compressed sparse row (CSR), compressed sparse column(CSC), and two different diagonal formats.
 To illustrate different formats, an example sparse matrix shown in Figure1 is used.
 <br>
 
@@ -58,9 +59,9 @@ a two-dimensional array that each row contains one diagonal. So, the row
 numbers of this matrix is equal to number of nonzero diagonals of
 the banded matrix. Figure 1 can be considered as a banded matrix and
 its corresponding diagonal format is shown below. *dd* is
-the array that stores diagonals. we store nonzero elements (diagonals)
-in *dd*. Size of *Offset* shows the number of
-diagonals. *offset[i]=0* is the main diagonal.
+the array that stores diagonals and *offset* shows the diagonal offset from
+the main diagonal. The size of *Offset* shows the
+number of diagonals. For a diagonal *i*, *offset[i]=0* is the main diagonal,
 *offsset[i]<0* is up-diagonal, and *offset[i]>0* is sub-diagonal.<br>
 dd:
 <br>
@@ -73,12 +74,16 @@ offset:
 <br>
 
 *Note:* to solve a linear system of the form *Ly = d*, *L* should be a
-lower triangular matrix. So we only store main diagonal, and sub-diagonals for a lower triangular banded matrix.
-*i=0* means main diagonal and for main diagonal we know row and column is the same, and for sub-diagonals *row>column*.<br>
+lower triangular matrix. So we only store main diagonal, and sub-diagonals
+for a lower triangular banded matrix.
+*i=0* means main diagonal and for the main diagonal we know row and column
+is the same, and for sub-diagonals *row>column*.<br>
 
 **Diagonal 2:** Second format that is suggested for storing a banded matrix,
-processes matrix row by row and stored every nonzero elements of banded matrix in *dm*. 
-So, nonzero elements of the first row are stored in *dm[0,*]*, and *dm[1,*]* contains nonzero elements of second row.
+processes matrix row by row and stored every nonzero elements of banded
+matrix in *dm*.
+So, nonzero elements of the first row are stored in *dm[0,*]*, and *dm[1,*]*
+contains nonzero elements of second row.
 
 dm:
 <br>
@@ -94,7 +99,8 @@ shown in Section 1.
 
 #### 2-1- Sparse Matrix – Vector Multiplication (SpMV)
 SpMV kernel computes *y = A\* x* where *A* is a sparse kernel and *x* and *y*
-are dense vectors. *A* can be stored in any of the four formats are introduced here.
+are dense vectors. *A* can be stored in any of the four formats are introduced
+here.
 We will explain how SpMV code differs using different formats.
 
 **CSR:** the code shown down in *Listing 1*, is the CSR variant of SpMV.
@@ -116,9 +122,10 @@ contiguously, each iteration *i* of SpMV CSR computes *result[i,0]*.
 <br>
 **CSC:** The code shown in *Listing 2* is the CSC variant of SpMV.
 The SpMV CSC code iterates over columns and computes the partial multiplication
-of each element in *result*. For this sequential implementation, the computed solution in *result* is
-final when all iterations are finished. This is the opposite of the SpMV CSR code where each iteration *i* computes
-*result[i,0]*.
+of each element in *result*. For this sequential implementation, the computed 
+solution in *result* is
+final when all iterations are finished. This is the opposite of the SpMV CSR 
+code where each iteration *i* computes *result[i,0]*.
 
 ```
  for (int i=0; i<col; i++ ) 
@@ -173,7 +180,7 @@ the number of diagonals (d1). Depending on whether the nonzero element is
 on the main diagonal, sub-diagonal, or up-diagonal, three different
 column index calculation is used as shown in *Listing 4*.
 
-*Note:* d1 = dNum/2 because in this case, we just considered main
+*Note:* d1 = dNum/2 because in this case, we only consider main
 and sub-diagonals.
 
 ```
@@ -227,7 +234,7 @@ Each iteration of *i* computes *y[i,0]*.
         s = 0;
     }
  ```
-<div align="center"> Listing 5: solving equation in CSR format </div>
+<div align="center"> Listing 5: solving *Lx=b* while *L* is stored in CSR format </div>
 <br>
 **CSC:** In CSC format, shown in *Listing 6*, we access elements of *L*
 column by column. For simplicity, we first copy the right-hand-side *d* into *y*.
@@ -247,7 +254,7 @@ all iterations are done.
             }
       }
  ```
-<div align="center"> Listing 6: solving equation in CSC format </div>
+<div align="center"> Listing 6: solving *Lx=b* while *L* is stored in CSC format </div>
 <br>
 **Diagonal1:** The first diagonal format is very inefficient for SpTRSV
 because the code should iterate over columns or rows and thus row or col
@@ -255,14 +262,14 @@ indices should be computed separately at the beginning from the diagonal
 elements. Therefore, it is excluded when comparing with other variants
 of SpTRSV.
 
-**Diagonal2:** second format that is suggested for storing the matrix in
-diagonal format, shown in *Listing 7*, is different.
-In this format, because we stored nonzero elements of banded matrix
-row by row, we use an implementation like CSR format.
-this implementation is more efficient than diagonal1.
-Because spatial locality in accessing nonzero elements is better than diagonal1.
-This is because for each iteration *row i* we can compute *y[i,0]*.
-Of course, Before the execution of inner for, we check whether
+**Diagonal2:** The second diagonal variant that is suggested for solving  
+the sparse lower triangular system is shown in *Listing 7.
+In this format, because we stored nonzero elements of the banded matrix
+row by row, we use an implementation similar to CSR format.
+This implementation is more efficient than diagonal1 because, spatial locality
+in accessing nonzero elements is better than the diagonal1 variant.
+And similar to CSR, for each iteration *i* of this variant we can compute *y[i,0]*.
+Also, before the execution of inner for, we check whether
 *d1* is bigger or smaller than *i*, because we have two different
 implementations to compute column number and  *y[i,0]*
 in each condition.
@@ -294,7 +301,7 @@ in each condition.
         s = 0;
     }
  ```
-<div align="center"> Listing 7: solving equation in diagonal2 format </div>
+<div align="center"> Listing 7: solving *Lx=b* while *L* is stored in diagonal2 format </div>
 
 ### 3- Experimental Results
 In this section, we evaluate the two kernels SpMV and SpTRSV for four
@@ -302,27 +309,28 @@ different sparse storage formats.
 We select a set of sparse matrices from the Suitesparse matrix repository
 as shown in *Table 1* to compare the performance of CSC and CSR variants
 of SpMV and SpTRSV.
+We run all experiments on a single core of an Intel Skylake processor.
 To compare the efficiency of diagonal formats with CSC and CSR, we generated
-random banded matrices with dimensions of 100-50000 with 5 nonzero diagonals.
+random banded matrices with dimensions of 100--50000 with 5 nonzero diagonals.
 
 ID | Name | Row Number | Column Number | Non-Zero Number
   :--- | --- | :---: | :---: | :---: 
- 1 |cbuckle |13681 |13681 |676515
- 2 |Dubcova2 |65025|65025 |1030225 
- 3 |Dubcova3 |146689 |146689 |3636643
- 4 |ecology2 |999999 |999999 |4995991
- 5 |gyro |17361 |17361 |1021159
- 6 |gyro_k |17361 |17361 |1021159
- 7 |LFAT5.mtx |14 |14 |46
- 8 |msc23052 |23052 |23052 |1142686
- 9 |olafu |16146 |16146|1015156
- 10 |parabolic_fem |525825 |525825 |3674625
- 11 |Pres_Poisson |14822|14822 |715804
- 12 |raefsky4 |19779 |19779 |1316789
- 13 |thermomech_dM|204316 |204316|1423116
- 14 |tmt_sym |726713|726713 |5080961
+1 |cbuckle |13681 |13681 |676515
+2 |Dubcova2 |65025|65025 |1030225
+3 |Dubcova3 |146689 |146689 |3636643
+4 |ecology2 |999999 |999999 |4995991
+5 |gyro |17361 |17361 |1021159
+6 |gyro_k |17361 |17361 |1021159
+7 |LFAT5.mtx |14 |14 |46
+8 |msc23052 |23052 |23052 |1142686
+9 |olafu |16146 |16146|1015156
+10 |parabolic_fem |525825 |525825 |3674625
+11 |Pres_Poisson |14822|14822 |715804
+12 |raefsky4 |19779 |19779 |1316789
+13 |thermomech_dM|204316 |204316|1423116
+14 |tmt_sym |726713|726713 |5080961
 
-<div align="left"> Table 1: List of matrices </div>
+<div align="left"> Table 1: List of selected matrices from the Suitesparse matrix collection </div>
 
 
 #### 3-1- SpMV Performance
@@ -333,24 +341,24 @@ is on average 1.08 times faster than the CSC variant.
 <br>
 ![graph1](https://github.com/leila68/Axb/blob/master/doc/graphM2.png "graph1")
 
-<div align="left"> Figure 2: The performance CSR, CSC variants of SpMV  </div>
+<div align="left"> Figure 2: The performance of CSR and CSC variants of SpMV  </div>
 <br>
 
 Figure 3 shows the performance of the diagonal variants of SpMV compared with
-CSC and CSR variants for the randomly generated banded matrices.
+CSC and CSR variants for some randomly generated banded matrices.
 As shown, the diagonal2 variant has the best performance because of
 its spatial locality and due to its compact storage format.
 <br>
 
 ![graph1](https://github.com/leila68/Axb/blob/master/doc/graphM1.png "graph1")
 
-<div align="left"> Figure 3: The performance CSR, CSC, diagonal1 and diagonal2 variants of SpMV  </div>
+<div align="left"> Figure 3: The performance of CSR, CSC, diagonal1 and diagonal2 variants of SpMV  </div>
 <br>
 
 #### 3-2- SpTRSV performance
-Figure 4 shows the performance of SpTRSV for both CSC and CSR. As shown,
+Figure 4 shows the performance of SpTRSV for both CSC and CSR formats. As shown,
 the performance of SpTRSV follow a similar trend to SpMV where the
-CSR variant outperforms the CSC one in most matrices.<br>
+CSR variant outperforms the CSC in most matrices.<br>
 
 ![graph1](https://github.com/leila68/Axb/blob/master/doc/graph1.png "graph1")
 

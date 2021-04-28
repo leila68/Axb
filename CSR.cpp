@@ -141,7 +141,6 @@ Matrix* CSR::csrMult()
 
             s = val[j] * v->array[idx[j]][0] + s;
         }
-
         result->array[i][0] = s;
         s = 0;
     }
@@ -229,4 +228,21 @@ void CSR::turntoCSR()
     delete []ptrR;
     delete []valR;
     delete []idxR;
+}
+
+void  CSR::turntoCSR2()
+{
+    int *colIdx = new int[nonzero];
+    int *rowNum = new int [row+1]();
+    int *ptrR = new int[row+1]();
+    int *idxR = new int[nonzero]();
+    double *valR = new double [nonzero]();
+
+    for(int i=0; i<row+1; i++)
+    {
+        for(int j=ptr[i]; j<ptr[i+1]; j++)
+        {
+
+        }
+    }
 }

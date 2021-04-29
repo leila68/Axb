@@ -196,7 +196,7 @@ void  csrFileTest(string f1)
     end = std::chrono::system_clock::now();
     elapsed_seconds = end - start;
     double durationSym = elapsed_seconds.count();
-    cout << "exacution time (CSR Solve):" << durationSym << "\n";
+    cout << "execution time (CSR Solve):" << durationSym << "\n";
     //result2->print();
 
     //csr Solve,Test the equation(ccf*y=rhcr)
@@ -253,7 +253,7 @@ void  cscFileTest(string f1)
     end = std::chrono::system_clock::now();
     elapsed_seconds = end - start;
     double durationSym = elapsed_seconds.count();
-    cout << "exacution time (CSC Solve):" << durationSym << "\n";
+    cout << "execution time (CSC Solve):" << durationSym << "\n";
     //cout<<"csc (solve):"<<"\n";
     // result3->print();
     // cout<<"print mcc again";
@@ -305,7 +305,7 @@ void  RunAll1(string f1)
         end = std::chrono::system_clock::now();
         elapsed_seconds = end-start;
         double durationSym1=elapsed_seconds.count();
-        // cout<<"exacution time(CSR):"<< durationSym1<<"\n";
+        // cout<<"execution time(CSR):"<< durationSym1<<"\n";
         //execution time-end
         //result1->print();
         tm1.push_back(durationSym1);
@@ -330,7 +330,7 @@ void  RunAll1(string f1)
         end = std::chrono::system_clock::now();
         elapsed_seconds = end-start;
         double durationSym2=elapsed_seconds.count();
-        // cout<<"exacution time(CSC):"<< durationSym2 <<"\n";
+        // cout<<"execution time(CSC):"<< durationSym2 <<"\n";
         //execution time-end
         // result2->print();
         tm2.push_back(durationSym2);
@@ -384,7 +384,7 @@ void  RunAll2(string f1)
         elapsed_seconds = end - start;
         double durationSym1 = elapsed_seconds.count();
         t1.push_back(durationSym1);
-        // cout << "exacution time (CSR Solve):" << durationSym1 << "\n";
+        // cout << "execution time (CSR Solve):" << durationSym1 << "\n";
         //result2->print();
         delete result2;
     }
@@ -591,7 +591,7 @@ void generalMultTest(int dim, int dl)
     end = std::chrono::system_clock::now();
     elapsed_seconds = end-start;
     double durationSym1=elapsed_seconds.count();
-    cout<<"exacution time(CSR):"<< durationSym1<<"\n";
+    cout<<"execution time(CSR):"<< durationSym1<<"\n";
     //execution time-end
 
     //result1->print();
@@ -606,7 +606,7 @@ void generalMultTest(int dim, int dl)
     end = std::chrono::system_clock::now();
     elapsed_seconds = end-start;
     double durationSym2=elapsed_seconds.count();
-    cout<<"exacution time(CSC):"<< durationSym2 <<"\n";
+    cout<<"execution time(CSC):"<< durationSym2 <<"\n";
     //execution time-end
     // result2->print();
 
@@ -621,7 +621,7 @@ void generalMultTest(int dim, int dl)
     end = std::chrono::system_clock::now();
     elapsed_seconds = end - start;
     double durationSym3 = elapsed_seconds.count();
-    cout << "exacution time (dia):" << durationSym3 << "\n";
+    cout << "execution time (dia):" << durationSym3 << "\n";
     //execution time-end
     //  result3->print();
 
@@ -634,7 +634,7 @@ void generalMultTest(int dim, int dl)
     end = std::chrono::system_clock::now();
     elapsed_seconds = end - start;
     double durationSym4 = elapsed_seconds.count();
-    cout << "exacution time (dia2):" << durationSym4 << "\n";
+    cout << "execution time (dia2):" << durationSym4 << "\n";
     //result4->print();
 
     //testing the result
@@ -666,7 +666,7 @@ void generalSolveTest(int dim, int dl)
 {
 // 7 for col and row - 4 got diagonal
     Matrix *dia = new Matrix(dim,dim," ");
-    dia->Random(dl,"3diagonal");
+    dia->Random(dl,"diagonal");
     dia->LowerTriangular();
     // dia->print();
     Matrix *v1 = dia->addTest(); // for testing vOne. this "v1" cause all rows of the result-vector be just "1"
@@ -688,7 +688,7 @@ void generalSolveTest(int dim, int dl)
     end = std::chrono::system_clock::now();
     elapsed_seconds = end - start;
     double durationSym1 = elapsed_seconds.count();
-    cout << "exacution time (CSR Solve):" << durationSym1 << "\n";
+    cout << "execution time (CSR Solve):" << durationSym1 << "\n";
     // result1->print();
     //csr Solve,Test
     Matrix *rs2 = cr1->csrMult(result1);
@@ -704,7 +704,7 @@ void generalSolveTest(int dim, int dl)
     end = std::chrono::system_clock::now();
     elapsed_seconds = end - start;
     double durationSym2 = elapsed_seconds.count();
-    cout << "exacution time (CSC Solve):" << durationSym2 << "\n";
+    cout << "execution time (CSC Solve):" << durationSym2 << "\n";
     //result2->print();
     //csc Solve,Test
     Matrix *mcc2 = cc1->cscMult(result2);
@@ -724,7 +724,7 @@ void generalSolveTest(int dim, int dl)
     end = std::chrono::system_clock::now();
     elapsed_seconds = end - start;
     double durationSym3 = elapsed_seconds.count();
-    cout << "exacution time (diagonal1 Solve):" << durationSym3 << "\n";
+    cout << "execution time (diagonal1 Solve):" << durationSym3 << "\n";
     // result3->print();
     //test
     Matrix *ts1 = d1->diaMult(d2,result3);
@@ -740,7 +740,7 @@ void generalSolveTest(int dim, int dl)
     end = std::chrono::system_clock::now();
     elapsed_seconds = end - start;
     double durationSym4 = elapsed_seconds.count();
-    cout << "exacution time (diagonal2 Solve):" << durationSym4 << "\n";
+    cout << "execution time (diagonal2 Solve):" << durationSym4 << "\n";
     // result4->print();
     //test
     Matrix *ts2 = d1->diaMult2(d3,result4);
@@ -813,7 +813,7 @@ void generalMultTest1(int dim, int dl)
         end = std::chrono::system_clock::now();
         elapsed_seconds = end-start;
         double durationSym1=elapsed_seconds.count();
-        // cout<<"exacution time(CSR):"<< durationSym1<<"\n";
+        // cout<<"execution time(CSR):"<< durationSym1<<"\n";
         //execution time-end
         //result1->print();
         tm1.push_back(durationSym1);
@@ -837,7 +837,7 @@ void generalMultTest1(int dim, int dl)
         end = std::chrono::system_clock::now();
         elapsed_seconds = end-start;
         double durationSym2=elapsed_seconds.count();
-        // cout<<"exacution time(CSC):"<< durationSym2 <<"\n";
+        // cout<<"execution time(CSC):"<< durationSym2 <<"\n";
         //execution time-end
         // result2->print();
         tm2.push_back(durationSym2);
@@ -862,7 +862,7 @@ void generalMultTest1(int dim, int dl)
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym3 = elapsed_seconds.count();
-        //  cout << "exacution time (dia):" << durationSym3 << "\n";
+        //  cout << "execution time (dia):" << durationSym3 << "\n";
         //execution time-end
         //  result3->print();
         tm3.push_back(durationSym3);
@@ -884,7 +884,7 @@ void generalMultTest1(int dim, int dl)
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym4 = elapsed_seconds.count();
-        // cout << "exacution time (dia2):" << durationSym4 << "\n";
+        // cout << "execution time (dia2):" << durationSym4 << "\n";
         //result4->print();
         tm4.push_back(durationSym4);
         delete result4;
@@ -949,7 +949,7 @@ void generalSolveTest1(int dim, int dl)
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym1 = elapsed_seconds.count();
-        // cout << "exacution time (CSR Solve):" << durationSym1 << "\n";
+        // cout << "execution time (CSR Solve):" << durationSym1 << "\n";
         // result1->print();
         t1.push_back(durationSym1);
         delete result1;
@@ -976,7 +976,7 @@ void generalSolveTest1(int dim, int dl)
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym2 = elapsed_seconds.count();
-        //cout << "exacution time (CSC Solve):" << durationSym2 << "\n";
+        //cout << "execution time (CSC Solve):" << durationSym2 << "\n";
         //result2->print();
         t2.push_back(durationSym2);
         delete result2;
@@ -1006,7 +1006,7 @@ void generalSolveTest1(int dim, int dl)
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym3 = elapsed_seconds.count();
-        //cout << "exacution time (diagonal1 Solve):" << durationSym3 << "\n";
+        //cout << "execution time (diagonal1 Solve):" << durationSym3 << "\n";
         // result3->print();
         t3.push_back(durationSym3);
         delete result3;
@@ -1032,7 +1032,7 @@ void generalSolveTest1(int dim, int dl)
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym4 = elapsed_seconds.count();
-        // cout << "exacution time (diagonal2 Solve):" << durationSym4 << "\n";
+        // cout << "execution time (diagonal2 Solve):" << durationSym4 << "\n";
         // result4->print();
         t4.push_back(durationSym4);
         delete result4;

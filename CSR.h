@@ -44,7 +44,7 @@ public:
 
     void turntoCSR();
 
-    void turntoCSR2();
+    int turntoCSC();
 
     CSR(int r, int c, int nz, int *p, int *ind, double *x);
 };

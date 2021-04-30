@@ -86,10 +86,12 @@ void CSR::initializeWithMatirx1(Matrix *m)//Private
     nzRow = new int[row];
     ptr[0] = 0;
 
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+    std::chrono::duration<double> elapsed_seconds;
+    start = std::chrono::system_clock::now();
     for (int i = 0; i < row; i++)
     {
         s = 0;
-
         for (int j = 0; j < col; j++)
         {
             if (m->array[i][j] != 0)
@@ -101,11 +103,13 @@ void CSR::initializeWithMatirx1(Matrix *m)//Private
             }
         }
         nzRow[i] = s;
+        ptr[i+1] = ptr[i]+nzRow[i];
     }
-    for (int i = 1; i <= row; i++)
-    {
-        ptr[i] = ptr[i - 1] + nzRow[i - 1];
-    }
+
+    end = std::chrono::system_clock::now();
+    elapsed_seconds = end - start;
+    double durationSym = elapsed_seconds.count();
+    cout << "execution time (initialize CSR):" << durationSym << "\n";
 
     delete []nzRow;
 }
@@ -167,50 +171,47 @@ Matrix* CSR::csrMult(Matrix *v)
     return result;
 }
 
-void CSR::turntoCSR()
+void  CSR::turntoCSR()
 {
-
-    int *colIdx = new int[nonzero];
-    int *rowNum = new int [row+1]();
+    int *rowCnt= new int [row]();
     int *ptrR = new int[row+1]();
-    int *idxR = new int[nonzero]();
+    int counter = 0;
+    int *colIdx = new int[nonzero]();
     double *valR = new double [nonzero]();
 
-    int k = 0;
-    int count = 0;
-     for(int i=0; i<col; i++)
-     {
-         for(int j=ptr[i]; j<ptr[i+1]; j++)
-         {
-           colIdx[j] = i;
-         }
-     }
-
+    //
+  //  int *idxR = new int[nonzero]();
+  //
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+    std::chrono::duration<double> elapsed_seconds;
+    start = std::chrono::system_clock::now();
+    for(int i=0; i<nonzero; i++)
+    {
+        rowCnt[idx[i]]++;
+    }
+    for(int i=0; i<row; i++)
+    {
+        ptrR[i] = counter;
+        counter += rowCnt[i];
+    }
+    ptrR[row] = nonzero;
+    memset(rowCnt, 0, sizeof(int) * row);//makes zero all elements of rowCtn
     for(int i=0; i<col; i++)
     {
-        for(int j=0; j<nonzero; j++)
+        for(int j= ptr[i]; j<ptr[i+1]; j++)
         {
-            if(idx[j] == i)
-            {
-                idxR[k] = colIdx[j];
-                valR[k] = val[j];
-                k++;
-                count++;
-            }
+           int r = idx[j];
+           int index = rowCnt[r]+ptrR[r];
+           colIdx[index] = i;
+           valR[index] = val[j];
+           rowCnt[r]++;
         }
-        rowNum[i]=count;
-        count = 0;
     }
-    rowNum[col] = k+1;
-    ptrR[0]=0;
-    for (int i = 1; i < row+1; i++)
-    {
-        ptrR[i] = ptrR[i-1]+rowNum[i-1];
-    }
+    end = std::chrono::system_clock::now();
+    elapsed_seconds = end - start;
+    double durationSym1 = elapsed_seconds.count();
+   // cout << "execution time (turn to CSR2):" << durationSym1 << "\n";
 
-    //ptr = ptrR;
-   // val = valR;
-   // idx = idxR;
     for(int i=0; i<row+1; i++)
     {
         ptr[i] = ptrR[i];
@@ -221,28 +222,17 @@ void CSR::turntoCSR()
     }
     for(int i=0; i<nonzero; i++)
     {
-        idx[i] = idxR[i];
+        idx[i] = colIdx[i];
     }
+
+    delete []rowCnt;
     delete []colIdx;
-    delete []rowNum;
     delete []ptrR;
     delete []valR;
-    delete []idxR;
 }
 
-void  CSR::turntoCSR2()
+int  CSR::turntoCSC()
 {
-    int *colIdx = new int[nonzero];
-    int *rowNum = new int [row+1]();
-    int *ptrR = new int[row+1]();
-    int *idxR = new int[nonzero]();
-    double *valR = new double [nonzero]();
-
-    for(int i=0; i<row+1; i++)
-    {
-        for(int j=ptr[i]; j<ptr[i+1]; j++)
-        {
-
-        }
-    }
+     turntoCSR();
+    return nonzero;
 }

@@ -23,6 +23,7 @@ void generalSolveTest(int dim, int dl);
 void generalMultTest1(int dim, int dl);
 void generalSolveTest1(int dim, int dl);
 void evaluatingFormatsMatrices(string f1);
+void  RunAll22(string f1);
 
 void evaluatingFormatsMatrices(string f1)
 {
@@ -31,12 +32,14 @@ void evaluatingFormatsMatrices(string f1)
 
     while(std::getline(f, name) )
     {
+        cout<< name<<"\n";
         if (name.empty())
         {
             break;
         }
-       // RunAll1(name);
-        RunAll2(name);
+        RunAll1(name);
+      //  RunAll2(name);
+
     }
     f.close();
 }
@@ -287,6 +290,7 @@ void  RunAll1(string f1)
     read_mtx_csc_real(fin, H, true);
 
     //print of csc file
+
     CSR *sr = new CSR(H->n, H->m, H->nnz, H->p, H->i, H->x);
     //sr->triplet();
     Matrix *v1 = new Matrix(H->n,1,"v1:");
@@ -697,7 +701,9 @@ void generalSolveTest(int dim, int dl)
     cout<<"Testing solve (CSR): "<<r1 <<"\n";
 
 //CSC solve
+
     CSC *cc1 = new CSC(dia);
+
     //  TriangularSolve *cs = new TriangularSolve(100);
     start = std::chrono::system_clock::now();
     Matrix *result2 = s->solve(cc1,v1);
@@ -799,10 +805,9 @@ void generalMultTest1(int dim, int dl)
     CSR *cr1 = new CSR(dia1);
     // cr1->triplet();
     Matrix *v1 = new Matrix(dim,1,"vector:");
-    //v1->Random();
+     v1->Random();
 
-    v1->One();
-    //v1->print();
+
     //execution time-start
     std::chrono::time_point<std::chrono::system_clock> start, end;
     std::chrono::duration<double> elapsed_seconds;
@@ -813,7 +818,7 @@ void generalMultTest1(int dim, int dl)
         end = std::chrono::system_clock::now();
         elapsed_seconds = end-start;
         double durationSym1=elapsed_seconds.count();
-        // cout<<"execution time(CSR):"<< durationSym1<<"\n";
+         //cout<<"execution time(CSR):"<< durationSym1<<"\n";
         //execution time-end
         //result1->print();
         tm1.push_back(durationSym1);
@@ -826,7 +831,8 @@ void generalMultTest1(int dim, int dl)
     cout<<"\n";
 
     //save matrix in csc format
-    CSC *cc1 = new CSC(dia1);
+      int nnz = cr1->turntoCSC();
+      CSC *cc1 = new CSC(dim,dim, nnz, cr1->ptr, cr1->idx, cr1->val);
     // cc1->Triplet();
 
     //execution time-start
@@ -884,7 +890,7 @@ void generalMultTest1(int dim, int dl)
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym4 = elapsed_seconds.count();
-        // cout << "execution time (dia2):" << durationSym4 << "\n";
+       //  cout << "execution time (dia2):" << durationSym4 << "\n";
         //result4->print();
         tm4.push_back(durationSym4);
         delete result4;
@@ -912,7 +918,7 @@ void generalMultTest1(int dim, int dl)
     delete d1;
     delete d2;
     delete m2;
-    //  delete d4;
+
 }
 
 void generalSolveTest1(int dim, int dl)
@@ -967,7 +973,8 @@ void generalSolveTest1(int dim, int dl)
     //  cout<<"Testing solve (CSR): "<<r1 <<"\n";
 
 //CSC solve
-    CSC *cc1 = new CSC(dia);
+    int nnz = cr1->turntoCSC();
+    CSC *cc1 = new CSC(dim, dim, nnz, cr1->ptr, cr1->idx, cr1->val);
     //  TriangularSolve *cs = new TriangularSolve(100);
     for(int i=0; i<5; i++)
     {
@@ -1082,3 +1089,4 @@ void generalSolveTest1(int dim, int dl)
     // delete ts2;
 
 }
+

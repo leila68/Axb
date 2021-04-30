@@ -945,7 +945,7 @@ void generalSolveTest1(int dim, int dl)
 
 //csrSolve
     CSR *cr1 = new CSR(dia);
-    TriangularSolve *rs = new TriangularSolve(dim);//n:row numbers
+    TriangularSolve *rs = new TriangularSolve(dim);//dim:row numbers
     std::chrono::time_point<std::chrono::system_clock> start, end;
     std::chrono::duration<double> elapsed_seconds;
     for(int i=0; i<5; i++)
@@ -975,7 +975,7 @@ void generalSolveTest1(int dim, int dl)
 //CSC solve
     int nnz = cr1->turntoCSC();
     CSC *cc1 = new CSC(dim, dim, nnz, cr1->ptr, cr1->idx, cr1->val);
-    //  TriangularSolve *cs = new TriangularSolve(100);
+
     for(int i=0; i<5; i++)
     {
         start = std::chrono::system_clock::now();

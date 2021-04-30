@@ -16,9 +16,11 @@ class CSC
   CSC(int r, int c, int nnz);
 
 public:
-    CSC(int r, int c, int nnz, int *p, int *d, double *v);
 
+    CSC(int r, int c, int nnz, int *p, int *d, double *v);
+    CSC(Matrix *m);
     ~CSC();
+
     void Triplet();
 
     Matrix* turnToRegular();
@@ -27,11 +29,12 @@ public:
 
     Matrix* cscMult(Matrix *v);
 
+
     double *val;
     int *ptr;
     int *idx;
     int *nzcol;
-    CSC(Matrix *m);
+
 };
 
 

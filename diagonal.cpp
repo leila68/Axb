@@ -75,9 +75,12 @@ Matrix* diagonal::diaStore(Matrix *m, int a)
         }
         return dd;
     }
-   else if (a == 1) {
-        Matrix *dd = new Matrix((dNum/2)+1, m->colNo, " turn a diagonal matrix to a dense matrix:");
 
+   else if (a == 1) {
+        std::chrono::time_point<std::chrono::system_clock> start, end;
+        std::chrono::duration<double> elapsed_seconds;
+        start = std::chrono::system_clock::now();
+        Matrix *dd = new Matrix((dNum/2)+1, m->colNo, " turn a diagonal matrix to a dense matrix:");
         for (int i = 0; i <= dNum / 2; i++) {
             for (int j = 0; j < m->colNo; j++) {
                 if(i==0)
@@ -92,7 +95,12 @@ Matrix* diagonal::diaStore(Matrix *m, int a)
 
             }
         }
+        end = std::chrono::system_clock::now();
+        elapsed_seconds = end - start;
+        double durationSym = elapsed_seconds.count();
+        //cout << "execution time (initialize dia1):" << durationSym << "\n";
         return dd;
+
     }
     return 0;
 }
@@ -134,6 +142,9 @@ Matrix* diagonal::diaStore2(Matrix *m, int a)
 
     Matrix *dm = new Matrix(m->rowNo, (dNum/2)+1, " turn a diagonal matrix to a dense matrix:");
     int c=0;
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+    std::chrono::duration<double> elapsed_seconds;
+    start = std::chrono::system_clock::now();
   for (int i=0; i< m->rowNo; i++)
   {
       for(int j=0; j<=i; j++)
@@ -146,6 +157,10 @@ Matrix* diagonal::diaStore2(Matrix *m, int a)
       }
       c=0;
   }
+    end = std::chrono::system_clock::now();
+    elapsed_seconds = end - start;
+    double durationSym = elapsed_seconds.count();
+   // cout << "execution time (initialize dia2):" << durationSym << "\n";
     return dm;
 }
 

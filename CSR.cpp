@@ -5,6 +5,7 @@
 #include "CSR.h"
 #include <iostream>
 #include <chrono>
+#include "cstring"
 
 CSR::CSR(int r, int c, int n)
 {
@@ -210,7 +211,7 @@ void  CSR::turntoCSR()
     end = std::chrono::system_clock::now();
     elapsed_seconds = end - start;
     double durationSym1 = elapsed_seconds.count();
-   // cout << "execution time (turn to CSR2):" << durationSym1 << "\n";
+    cout << "execution time (turn to CSR2):" << durationSym1 << "\n";
 
     for(int i=0; i<row+1; i++)
     {

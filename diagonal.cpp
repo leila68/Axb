@@ -98,7 +98,7 @@ Matrix* diagonal::diaStore(Matrix *m, int a)
         end = std::chrono::system_clock::now();
         elapsed_seconds = end - start;
         double durationSym = elapsed_seconds.count();
-        //cout << "execution time (initialize dia1):" << durationSym << "\n";
+        cout << "execution time (initialize dia1):" << durationSym << "\n";
         return dd;
 
     }
@@ -160,7 +160,7 @@ Matrix* diagonal::diaStore2(Matrix *m, int a)
     end = std::chrono::system_clock::now();
     elapsed_seconds = end - start;
     double durationSym = elapsed_seconds.count();
-   // cout << "execution time (initialize dia2):" << durationSym << "\n";
+    cout << "execution time (initialize dia2):" << durationSym << "\n";
     return dm;
 }
 

@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
 
     if(argc == 2)
      {
+
          string f1 = argv[1];
          evaluatingFormatsMatrices(f1);
      }
@@ -42,6 +43,8 @@ int main(int argc, char *argv[])
         //  generalSolveTest(dim,dl);
         //  generalMultTest1(dim,dl);//this function repeat each multiply 5 times
           generalSolveTest1(dim,dl);//this function repeat each solve 5 times
+
+
     }
     //Diagonal should be odd number, dim: number of rows  - dl=number of diagonal
 

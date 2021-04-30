@@ -37,8 +37,8 @@ void evaluatingFormatsMatrices(string f1)
         {
             break;
         }
-        RunAll1(name);
-      //  RunAll2(name);
+       // RunAll1(name);
+        RunAll2(name);
 
     }
     f.close();

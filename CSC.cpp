@@ -39,6 +39,7 @@ CSC::CSC(int r, int c, int nnz, int *p, int *d, double *v)
     }
 
  }
+
 CSC::CSC(Matrix *m)
 {
   initializeWithMatirx(m);
@@ -94,6 +95,10 @@ void CSC::initializeWithMatirx(Matrix *m)
     nzcol = new int[col];
 
     ptr[0] = 0;
+
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+    std::chrono::duration<double> elapsed_seconds;
+    start = std::chrono::system_clock::now();
     for (int i = 0; i < col; i++)
     {
         s = 0;
@@ -108,11 +113,12 @@ void CSC::initializeWithMatirx(Matrix *m)
             }
         }
         nzcol[i] = s;
+        ptr[i+1] = ptr[i]+nzcol[i];
     }
-    for (int i = 1; i <= col; i++)
-    {
-        ptr[i] = ptr[i - 1] + nzcol[i - 1];
-    }
+    end = std::chrono::system_clock::now();
+    elapsed_seconds = end - start;
+    double durationSym1 = elapsed_seconds.count();
+    cout << "execution time ( initialize CSC):" << durationSym1 << "\n";
     delete []nzcol;
 }
 
@@ -131,3 +137,4 @@ Matrix* CSC::cscMult(Matrix *v)
 
     return result;
 }
+
